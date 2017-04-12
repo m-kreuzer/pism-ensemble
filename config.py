@@ -22,9 +22,6 @@ CALVTHK=200
 
 start_year=100000
 end_year=100100
-extratm=0:10:1000000
-timestm=0:1:1000000
-snapstm=0:1:1000000
 
 # should not be necessary, as we want to avoid regridding within PISM.
 THIRTYKMGRID="-Mx 200 -My 200 -Lz 5000 -Lbz 2000 -Mz 41 -Mbz 16"
@@ -38,6 +35,11 @@ grid=FIVEKMGRID
 
 
 ###### output settings
+
+extratm = "0:10:1000000"
+timestm = "0:1:1000000"
+snapstm = "0:1:1000000"
+
 extra_vars="thk,topg,velbar_mag,flux_mag,mask,dHdt,usurf,hardav,velbase,velsurf,velbar,wvelbase,wvelsurf,tauc,deviatoric_stresses,climatic_mass_balance,gl_mask,rank,bmelt,Soc,Soc_base,Toc,Toc_base,Toc_inCelsius,T_star,Toc_anomaly,overturning,heatflux,basalmeltrate_shelf,basins,BOXMODELmask,BOXMODELmask2,OCEANMEANmask,ICERISESmask,DistGL,DistIF,cell_area,ocean_temp,tillwat,mask,thk,edot_1,edot_2,salinity,salinity_ocean,thetao,theta_ocean,shelfbmassflux,shelfbtemp,strain_rates"
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars $extra_vars"
 ts_vars="ivol,imass,slvol,iareag,iareaf,iarea,surface_ice_flux,grounded_basal_ice_flux,sub_shelf_ice_flux,nonneg_rule_flux,discharge_flux,max_hor_vel,ienthalpy,max_diffusivity,dt"
@@ -58,12 +60,6 @@ stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -ssa_method fd -ssa_flo
 stress_opts="-stress_balance sia -sia_flow_law gpbld"
 
 strongksp_opts="-ssafd_ksp_type gmres -ssafd_ksp_norm_type unpreconditioned -ssafd_ksp_pc_side right -ssafd_pc_type asm -ssafd_sub_pc_type lu"
-
-## allow for batch preparation of runs (set runit to false by script)
-runit=true
-if [ "$runit" = false ]; then exit; fi
-
-cd $outdir
 
 run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o final.nc"
 #run_opts="-ys $start_year -ye $end_year -pik "
