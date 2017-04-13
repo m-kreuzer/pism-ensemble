@@ -15,9 +15,9 @@ PISM_EXEC=$pism_exec
 echo $outdir
 
 # create output directory and copy executable and source
-mkdir -v -p $outdir/bin
-mkdir -v -p $outdir/src
-mkdir -v -p $outdir/log
+mkdir -p $outdir/bin
+mkdir -p $outdir/src
+mkdir -p $outdir/log
 
 # get new pism code if fetch is argument
 if [ "$1" = "fetch" ]
@@ -48,62 +48,50 @@ else
 fi
 PISM_DO="$PISM_MPIDO $NN $PISM_EXEC"
 
-infile={{input_file}}
+infile=$input_data_dir/{{input_file}}
 atmfile=$infile
-oceanfile={{ocean_file}}
-
-# Ocean Box Model Parameters
-overturning_coeff={{overturning_coeff}}
-gamma_T={{gamma_t}}
-
-
-##### PARAMETERS #####
-PWFRAC=0.93
-PHIMIN=5
-E_SIA=4.5
-E_SSA=0.8
-Q=0.33
-EIGEN_K=2e16
-CALVTHK=200
-
-start_year=100000
-end_year=100100
-extratm=0:10:1000000
-timestm=0:1:1000000
-snapstm=0:1:1000000
+oceanfile=$input_data_dir/{{ocean_file}}
+grid="{{grid}}"
 
 ###### output settings
+start_year=100000
+end_year=100200
+extratm=0:100:1000000
+timestm=0:1:1000000
+snapstm=0:1:1000000
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
 ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
+output_opts="$extra_opts $snaps_opts $ts_opts"
 
-##### OPTIONS #####
-# init_opts="-boot_file $input_data_dir/$infile $PIGONEKMGRID"
-init_opts="-bootstrap -i $infile $grid"
-atm_opts="-surface given -surface_given_file $atmfile"
-ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile"
-#calv_opts="-calving eigen_calving,thickness_calving -eigen_calving_K $EIGEN_K  -thickness_calving_threshold $CALVTHK"
+###### boundary conditions
+atm_opts="-surface simple -atmosphere given -atmosphere_given_file $infile"
+ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}} \
+            -overturning_coeff {{overturning_coeff}}"
 calv_opts="-calving ocean_kill -ocean_kill_file $infile"
-
+bed_opts="-bed_def none -hydrology null"
 subgl_opts="-subgl -no_subgl_basal_melt"
-basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000"
-stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -ssa_method fd -ssa_flow_law gpbld -ssafd_ksp_rtol 1e-7"
-stress_opts="-stress_balance sia -sia_flow_law gpbld"
 
-strongksp_opts="-ssafd_ksp_type gmres -ssafd_ksp_norm_type unpreconditioned -ssafd_ksp_pc_side right -ssafd_pc_type asm -ssafd_sub_pc_type lu"
+###### ice physics
+basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000"
+stress_opts="-stress_balance sia -sia_flow_law gpbld -sia_e {{sia_enhancement}}"
+
+###### technical
+init_opts="-bootstrap -i $infile $grid -config my_pism_config.nc"
+## netcdf4_parallel needs compilation with
+run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o final.nc"
 
 ## allow for batch preparation of runs (set runit to false by script)
 runit=true
 if [ "$runit" = false ]; then exit; fi
 
+options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
+         $basal_opts $stress_opts $output_opts"
+
 cd $outdir
-
-run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o final.nc"
-#run_opts="-ys $start_year -ye $end_year -pik "
-options="$init_opts $atm_opts $ocean_opts $calv_opts $ts_opts \
-$subgl_opts $basal_opts $run_opts $stress_opts"
-
 $PISM_DO $options
 #gdb --args $PISM_DO $options
 # mpiexec -n 4
 # valgrind --tool=memcheck -q --num-callers=20 --log-file=valgrind.log.%p $PISM_DO -malloc off $options
+
+# -i /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/pism_bedmap2_racmo_uplift_velrignot_lgmokill_15km.nc -bootstrap -Mx 400 -My 400 -Lz 7000 -Lbz 2000 -Mz 141 -Mbz 21 -calving ocean_kill -ocean_kill_file /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/pism_bedmap2_racmo_uplift_velrignot_lgmokill_15km.nc -bed_def none -hydrology null -atmosphere pik_temp -temp_era_interim -atmosphere_pik_temp_file /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/pism_bedmap2_racmo_uplift_velrignot_lgmokill_15km.nc -surface pdd -ocean cavity -ocean_cavity_file /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/Schmidtko.jouzel07temponly_basins_constPD.nc -gamma_T 1.0e-5 -overturning_coeff 0.8e6 -value_C 0.8e6 -exclude_icerises -number_of_basins 20 -continental_shelf_depth -2000 -sia_e 2.0 -pik -topg_to_phi 1.0,45.0,-500.0,1000.0 -bed_smoother_range 5.0e3 -y 200 -o /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/results/result_boot_15km.nc -options_left -verbose 2 -o_order zyx -o_size big

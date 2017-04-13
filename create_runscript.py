@@ -7,6 +7,8 @@ import user_and_platform_settings as up_settings; reload(up_settings)
 import pism_ant_equi.pism_ant_equi as pae; reload(pae)
 
 runscript_path = os.path.join(up_settings.experiment_dir,ps.ensemble_name)
+output_path = os.path.join(up_settings.working_dir,ps.ensemble_name)
+grid = ps.grids[ps.resolution]
 
 if not os.path.exists(runscript_path):
     os.makedirs(runscript_path)
@@ -17,6 +19,9 @@ pae.write_pism_runscript(up_settings, "run_smoothing.template.sh", runscript_pat
                          ocean_file = ps.ocean_file,
                          extra_variables = ps.extra_variables,
                          timeseries_variables = ps.timeseries_variables,
+                         sia_enhancement = 2.0,
+                         grid = grid,
+                         gamma_T = ps.gamma_T, overturning_coeff = ps.overturning_coeff
                          )
 
 pae.write_pism_runscript(up_settings, "set_environment.template.sh", runscript_path,
@@ -28,4 +33,4 @@ pae.write_pism_runscript(up_settings, "set_environment.template.sh", runscript_p
                          )
 
 subprocess.check_call("ncgen3 pism_config.cdl -o "+
-                      os.path.join(runscript_path,"pism_config.nc"), shell=True)
+                      os.path.join(output_path,"my_pism_config.nc"), shell=True)

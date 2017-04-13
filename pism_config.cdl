@@ -756,7 +756,7 @@ netcdf pism_config {
     pism_config:hydrology.model_type = "keyword";
 
     pism_config:hydrology.null_diffuse_till_water = "no";
-    pism_config:hydrology.null_diffuse_till_water_doc = "Diffuse stored till water laterally. See equation (11) of [@ref BBssasliding]"; 
+    pism_config:hydrology.null_diffuse_till_water_doc = "Diffuse stored till water laterally. See equation (11) of [@ref BBssasliding]";
     pism_config:hydrology.null_diffuse_till_water_type = "boolean";
 
     pism_config:hydrology.null_diffusion_distance = 2e4;
