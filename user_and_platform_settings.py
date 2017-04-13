@@ -20,6 +20,10 @@ pism_executable = "./bin/pismr"
 
 
 
+
+
+######### unused below ##########
+
 init_opts="-bootstrap -i $infile $grid"
 atm_opts="-atmosphere given -atmosphere_given_file $atmfile -surface simple"
 ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile"

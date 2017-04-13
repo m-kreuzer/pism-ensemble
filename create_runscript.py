@@ -1,6 +1,7 @@
 
 
 import os
+import subprocess
 import pism_settings as ps; reload(ps)
 import user_and_platform_settings as up_settings; reload(up_settings)
 import pism_ant_equi.pism_ant_equi as pae; reload(pae)
@@ -26,3 +27,5 @@ pae.write_pism_runscript(up_settings, "set_environment.template.sh", runscript_p
                          pism_mpi_do=up_settings.pism_mpi_do
                          )
 
+subprocess.check_call("ncgen3 pism_config.cdl -o "+
+                      os.path.join(runscript_path,"pism_config.nc"), shell=True)

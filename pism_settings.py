@@ -5,9 +5,10 @@ import numpy as np
 
 ensemble_name = "pismpik_020_equilibriumtesting_20km_03"
 resolution = 20 # in km
+## for creation of input data, see icesheets/pism_input project.
 input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_20km.nc"
-ocean_file = "/schmidtko/schmidtko_20km_means.nc"
+ocean_file = "schmidtko/schmidtko_20km_means.nc"
 do_smoothing = True
 do_nomass = True
 do_full_physics = False
@@ -22,6 +23,9 @@ extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"
 timeseries_variables = ("ivol,imass,slvol,iareag,iareaf,sub_shelf_ice_flux,"
                         "discharge_flux,max_hor_vel,ienthalpy,max_diffusivity,dt")
 
+
+
+######### unused below ##########
 
 init_opts="-bootstrap -i $infile $grid"
 atm_opts="-atmosphere given -atmosphere_given_file $atmfile -surface simple"
