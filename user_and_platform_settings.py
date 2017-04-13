@@ -1,3 +1,34 @@
+"""
+Platform and user specific settings
+These mostly go to the set_environment.sh that is sourced from
+the PISM run script.
+This should only be commited for major changes affecting all users.
+"""
+
+import os
+import pwd
+
+username = pwd.getpwuid(os.getuid()).pw_name
+project_root = os.path.dirname(os.path.abspath(__file__))
+experiment_dir = os.path.join("/home/",username,"pism_experiments")
+working_dir = "/p/tmp/mengel/pism_out"
+input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+pism_mpi_do = "mpiexec.hydra -bootstrap slurm -n"
+pism_executable = "./bin/pismr"
+
+
+
+init_opts="-bootstrap -i $infile $grid"
+atm_opts="-atmosphere given -atmosphere_given_file $atmfile -surface simple"
+ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile"
+calv_opts="-calving eigen_calving,thickness_calving -eigen_calving_K $EIGEN_K  -thickness_calving_threshold $CALVTHK"
+
+subgl_opts="-subgl -no_subgl_basal_melt"
+basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000"
+stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -ssa_method fd -ssa_flow_law gpbld -ssafd_ksp_rtol 1e-7"
+
+strongksp_opts="-ssafd_ksp_type gmres -ssafd_ksp_norm_type unpreconditioned -ssafd_ksp_pc_side right -ssafd_pc_type asm -ssafd_sub_pc_type lu"
+
 
 pism_executable="./bin/pismr"
 
@@ -65,8 +96,3 @@ run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o final
 #run_opts="-ys $start_year -ye $end_year -pik "
 options="$init_opts $atm_opts $ocean_opts $calv_opts $ts_opts \
 $subgl_opts $basal_opts $run_opts $stress_opts"
-
-$PISM_DO $options
-#gdb --args $PISM_DO $options
-# mpiexec -n 4
-# valgrind --tool=memcheck -q --num-callers=20 --log-file=valgrind.log.%p $PISM_DO -malloc off $options

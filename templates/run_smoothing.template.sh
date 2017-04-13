@@ -2,19 +2,20 @@
 
 # created by matthias.mengel@pik-potsdam.de
 
-# get user and computer specific variables like paths
+# get user and platform-specific variables like working_dir, home_dir,
+# pism_exec and mpi command
 source set_environment.sh
 
 runname=`echo $PWD | awk -F/ '{print $NF}'`
+codever=`echo $PWD | awk -F/ '{print $NF}' | awk -F_ '{print $1}'`
+thisdir=`echo $PWD`
 outdir=$working_dir/$runname
+PISM_EXEC=$pism_exec
 
 # create output directory and copy executable and source
 mkdir -p $outdir/bin
 mkdir -p $outdir/src
 mkdir -p $outdir/log
-
-codever=`echo $PWD | awk -F/ '{print $NF}' | awk -F_ '{print $1}'`
-thisdir=`echo $PWD`
 
 # get new pism code if fetch is argument
 if [ "$1" = "fetch" ]
@@ -32,13 +33,10 @@ if [ $# -gt 0 ] ; then  # if user says "exp.sh 8" then NN = 8
   NN="$1"
 fi
 
-PISM_EXEC=./bin/pismr
-#PISM_EXEC=/home/hpc/pr94ga/di36lav/pism/pismpik/build/pismr
-
 ###### use only MPI if job is submitted
 if [ -n "${PISM_ON_CLUSTER:+1}" ]; then  # check if env var is set
   echo "$SCRIPTNAME this run was submitted, use MPI"
-  PISM_MPIDO=$PISM_MPIDO
+  PISM_MPIDO=$pism_mpi_do
   echo "$SCRIPTNAME      PISM_MPIDO = $PISM_MPIDO"
 else
   echo "$SCRIPTNAME this is interactive, skip use of MPI"
@@ -48,23 +46,14 @@ else
 fi
 PISM_DO="$PISM_MPIDO $NN $PISM_EXEC"
 
-infile=$input_data_dir/albmap_bedmap2_bhflxcap_5km_RtopoRefThkBedmZwallyBasins_lite.nc
-atmfile=$input_data_dir/HadCM3_c20_onlyPrecipTemp_15km_ready.for.pism.nc
-oceanfile=$input_data_dir/Antarctic_shelf_data_potential.temps_pismready_5km.nc
-# grids
-THIRTYKMGRID="-Mx 200 -My 200 -Lz 5000 -Lbz 2000 -Mz 41 -Mbz 16"
-TWENTYKMGRID="-Mx 300 -My 300 -Lz 5000 -Lbz 2000 -Mz 81 -Mbz 21"
-FIFTEENKMGRID="-Mx 400 -My 400 -Lz 5000 -Lbz 2000 -Mz 81 -Mbz 21"
-TWELVEKMGRID="-Mx 500 -My 500 -Lz 5000 -Lbz 2000 -Mz 101 -Mbz 31"
-TENKMGRID="-Mx 600 -My 600 -Lz 5000 -Lbz 2000 -Mz 101 -Mbz 31"
-SEVENKMGRID="-Mx 800 -My 800 -Lz 5000 -Lbz 2000 -Mz 151 -Mbz 31"
-FIVEKMGRID="-Mx 1200 -My 1200 -Lz 5000 -Lbz 2000 -Mz 201 -Mbz 51"
-grid=$FIVEKMGRID
+infile={{input_file}}
+atmfile=$infile
+oceanfile={{ocean_file}}
 
 # Ocean Box Model Parameters
-value_C=1.000000e+06
-gamma_T=2.000000e-05
-width_glbox=5.0 # in km
+overturning_coeff={{overturning_coeff}}
+gamma_T={{gamma_t}}
+
 
 ##### PARAMETERS #####
 PWFRAC=0.93
@@ -82,10 +71,8 @@ timestm=0:1:1000000
 snapstm=0:1:1000000
 
 ###### output settings
-extra_vars="thk,topg,velbar_mag,flux_mag,mask,dHdt,usurf,hardav,velbase,velsurf,velbar,wvelbase,wvelsurf,tauc,deviatoric_stresses,climatic_mass_balance,gl_mask,rank,bmelt,Soc,Soc_base,Toc,Toc_base,Toc_inCelsius,T_star,Toc_anomaly,overturning,heatflux,basalmeltrate_shelf,basins,BOXMODELmask,BOXMODELmask2,OCEANMEANmask,ICERISESmask,DistGL,DistIF,cell_area,ocean_temp,tillwat,mask,thk,edot_1,edot_2,salinity,salinity_ocean,thetao,theta_ocean,shelfbmassflux,shelfbtemp,strain_rates"
-extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars $extra_vars"
-ts_vars="ivol,imass,slvol,iareag,iareaf,iarea,surface_ice_flux,grounded_basal_ice_flux,sub_shelf_ice_flux,nonneg_rule_flux,discharge_flux,max_hor_vel,ienthalpy,max_diffusivity,dt"
-ts_opts="-ts_times $timestm -ts_vars $ts_vars -ts_file timeseries.nc"
+extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
+ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
 
 ##### OPTIONS #####
