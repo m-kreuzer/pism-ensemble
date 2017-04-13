@@ -5,9 +5,9 @@
 # the pism run script can be shared without effort.
 # created by matthias.mengel@pik-potsdam.de
 
-export home_dir={{home_dir}}
+export pismcode_dir={{pismcode_dir}}
 export working_dir={{working_dir}}
 export input_data_dir={{input_data_dir}}
-export pism_exec={{pism_exec}}
-export pism_mpi_do={{pism_mpi_do}}
+export pism_exec={{pism_executable}}
+export pism_mpi_do="{{pism_mpi_do}}"
 

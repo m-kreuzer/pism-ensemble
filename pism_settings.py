@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 
-ensemble_name = "pismpik_020_equilibriumtesting_20km_02"
+ensemble_name = "pismpik_020_equilibriumtesting_20km_03"
 resolution = 20 # in km
 input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_20km.nc"

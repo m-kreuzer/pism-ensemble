@@ -2,7 +2,7 @@
 
 # created by matthias.mengel@pik-potsdam.de
 
-# get user and platform-specific variables like working_dir, home_dir,
+# get user and platform-specific variables like working_dir, pismcodedir,
 # pism_exec and mpi command
 source set_environment.sh
 
@@ -12,16 +12,18 @@ thisdir=`echo $PWD`
 outdir=$working_dir/$runname
 PISM_EXEC=$pism_exec
 
+echo $outdir
+
 # create output directory and copy executable and source
-mkdir -p $outdir/bin
-mkdir -p $outdir/src
-mkdir -p $outdir/log
+mkdir -v -p $outdir/bin
+mkdir -v -p $outdir/src
+mkdir -v -p $outdir/log
 
 # get new pism code if fetch is argument
 if [ "$1" = "fetch" ]
   then
-  rsync -aCv $home_dir/pism/$codever/bin/pismr $outdir/bin/
-  cd $home_dir/pism/$codever
+  rsync -aCv $pismcode_dir/$codever/bin/pismr $outdir/bin/
+  cd $pismcode_dir/$codever
   echo ------ `date` --- $RUNNAME ------                  >> $thisdir/log/versionInfo
   echo "commit $(git log --pretty=oneline --max-count=1)" >> $thisdir/log/versionInfo
   echo "branch $( git branch | grep \*)"                  >> $thisdir/log/versionInfo

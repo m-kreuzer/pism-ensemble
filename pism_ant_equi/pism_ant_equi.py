@@ -1,7 +1,7 @@
 
 import os
 import jinja2
-
+import subprocess
 
 
 def write_pism_runscript(up_settings, template, runscript_path, **kwargs):
@@ -17,11 +17,10 @@ def write_pism_runscript(up_settings, template, runscript_path, **kwargs):
     scen_template = jinja_env.get_template(template)
     out = scen_template.render(**kwargs)
 
-    if not os.path.exists(runscript_path): os.makedirs(runscript_path)
-
     script_to_write = os.path.join(runscript_path,template.replace("template.",""))
 
     with open(script_to_write, 'w') as f:
         f.write(out)
-    print "Wrote",script_to_write,"to"
-    print runscript_path
+    subprocess.check_call("chmod u+x "+script_to_write, shell=True)
+
+    print "Wrote",script_to_write

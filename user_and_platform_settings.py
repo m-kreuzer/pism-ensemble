@@ -10,7 +10,9 @@ import pwd
 
 username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
+
 experiment_dir = os.path.join("/home/",username,"pism_experiments")
+pismcode_dir = os.path.join("/home/",username,"pism")
 working_dir = "/p/tmp/mengel/pism_out"
 input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 pism_mpi_do = "mpiexec.hydra -bootstrap slurm -n"
