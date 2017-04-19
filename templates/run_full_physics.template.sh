@@ -53,7 +53,7 @@ oceanfile=$input_data_dir/{{ocean_file}}
 grid="{{grid}}"
 
 ######## FULL PHYSICS EQUILIBRIUM ########
-infile="no_mass.nc"
+infile={{start_from_file}}
 
 ###### output settings
 start_year=100000
@@ -68,7 +68,7 @@ output_opts="$extra_opts $snaps_opts $ts_opts"
 
 ###### boundary conditions
 atm_opts="-surface simple -atmosphere given -atmosphere_given_file $infile"
-ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}} \
+ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}}e-5 \
             -overturning_coeff {{overturning_coeff}}"
 calv_opts="-calving ocean_kill -ocean_kill_file $infile"
 bed_opts="-bed_def none -hydrology null"

@@ -6,23 +6,31 @@ This should only be commited for major changes affecting all users.
 
 import os
 import numpy as np
+import collections
 
-ensemble_name = "pismpik_020_equilibriumtesting_20km_03"
+ensemble_name = "pismpik_021_equi20km"
 resolution = 20 # in km
 ## for creation of input data, see icesheets/pism_input project.
 input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_20km.nc"
 ocean_file = "schmidtko/schmidtko_20km_means.nc"
-do_smoothing = True
-do_nomass = True
-do_full_physics = False
+#
+start_from_file = "/p/tmp/mengel/pism_out/pismpik_020_equilibriumtesting_20km_03/no_mass.nc"
+
 
 # ensemble parameters
-ssa_e = np.arange(0.5,1.1,0.1)
-sia_e = np.arange(2,5,1)
+ssa_e = np.array([0.5,1.0])
+sia_e = np.array([2.,5.])
 # these two are for PICO
-overturning_coeff = 2e-5
-gamma_T = 1e6
+overturning_coeff = np.arange(0.5,6.5+3.,3.) # in Sverdrup
+# gamma_T in 1.e-5  m/s, e-5 is set in run script.
+gamma_T = np.arange(1,5+2.,2.)
+
+# we create PISM run scripts for all the following parameter combinations
+ensemble_variables = {"sia":sia_e,"ssa":ssa_e,"ovC":overturning_coeff,"gamT":gamma_T}
+# sort by name and keep this sorting
+ensemble_variables = collections.OrderedDict(
+    sorted(ensemble_variables.items(), key=lambda t: t[0]))
 
 extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"
                    "theta_ocean,shelfbmassflux,shelfbtemp")
