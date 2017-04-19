@@ -13,7 +13,6 @@ def write_pism_runscript(up_settings, template, runscript_path, **kwargs):
     jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(
                 searchpath=os.path.join(up_settings.project_root,"templates")))
 
-    print os.path.join(up_settings.project_root,"templates")
     scen_template = jinja_env.get_template(template)
     out = scen_template.render(**kwargs)
 
