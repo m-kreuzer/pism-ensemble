@@ -32,5 +32,16 @@ pae.write_pism_runscript(up_settings, "set_environment.template.sh", runscript_p
                          pism_mpi_do=up_settings.pism_mpi_do
                          )
 
+pae.write_pism_runscript(up_settings, "submit.template.sh", runscript_path,
+                         submit_class = "short",
+                         cluster_runtime = "1-00:00:00",
+                         ensemble_name = ps.ensemble_name,
+                         number_of_cores = 16,
+                         username = up_settings.username,
+                         pism_run_script = "run_smoothing.sh"
+                         )
+
+
+# write a custom parameter file to output path.
 subprocess.check_call("ncgen3 pism_config.cdl -o "+
                       os.path.join(output_path,"my_pism_config.nc"), shell=True)
