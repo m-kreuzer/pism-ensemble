@@ -22,12 +22,17 @@ start_from_file = "/p/tmp/mengel/pism_out/pismpik_020_equilibriumtesting_20km_03
 ssa_e = np.array([0.5,1.0])
 sia_e = np.array([2.,5.])
 # these two are for PICO
-overturning_coeff = np.arange(0.5,6.5+3.,3.) # in Sverdrup
+# overturning_coeff in 1e6 kg-1 s-1, e6 is set in run script.
+overturning_coeff = np.arange(0.5,6.5+3.,3.)
 # gamma_T in 1.e-5  m/s, e-5 is set in run script.
 gamma_T = np.arange(1,5+2.,2.)
 
 # we create PISM run scripts for all the following parameter combinations
+# the "short" dict keys here go into the experiment name
 ensemble_variables = {"sia":sia_e,"ssa":ssa_e,"ovC":overturning_coeff,"gamT":gamma_T}
+# the "long" names here are used within the code.
+# TODO: providing shortnames here, and longnames above may be clearer.
+ensemble_longnames = {"sia":"sia_e","ssa":"ssa_e","ovC":"overturning_coeff","gamT":"gamma_T"}
 # sort by name and keep this sorting
 ensemble_variables = collections.OrderedDict(
     sorted(ensemble_variables.items(), key=lambda t: t[0]))

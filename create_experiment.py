@@ -9,6 +9,8 @@ import pism_ant_equi.pism_ant_equi as pae; reload(pae)
 
 
 def create_experiment(ensemble_member_name=ps.ensemble_name,
+                      ensemble_params={"gamma_T":1.0,"overturning_coeff":1.0,
+                                       "sia_e":2.0,"ssa_e":1.0},
                       copy_pism_exec=False):
 
     runscript_path = os.path.join(up_settings.experiment_dir,ensemble_member_name)
@@ -31,9 +33,10 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                                  ocean_file = ps.ocean_file,
                                  extra_variables = ps.extra_variables,
                                  timeseries_variables = ps.timeseries_variables,
-                                 sia_enhancement = 2.0,
+                                 sia_enhancement = ensemble_params["sia_e"],
                                  grid = grid,
-                                 gamma_T = ps.gamma_T, overturning_coeff = ps.overturning_coeff
+                                 gamma_T = ensemble_params["gamma_T"],
+                                 overturning_coeff = ensemble_params["overturning_coeff"]
                                  )
 
     if up_settings.create_full_physics_script:
@@ -44,10 +47,11 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                                  start_from_file = ps.start_from_file,
                                  extra_variables = ps.extra_variables,
                                  timeseries_variables = ps.timeseries_variables,
-                                 sia_enhancement = 2.0,
+                                 sia_enhancement = ensemble_params["sia_e"],
+                                 ssa_enhancement = ensemble_params["ssa_e"],
                                  grid = grid,
-                                 gamma_T = ps.gamma_T,
-                                 overturning_coeff = ps.overturning_coeff
+                                 gamma_T = ensemble_params["gamma_T"],
+                                 overturning_coeff = ensemble_params["overturning_coeff"]
                                  )
 
     pae.write_pism_runscript(up_settings, "set_environment.template.sh", runscript_path,
@@ -68,7 +72,9 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              )
 
     if copy_pism_exec:
-        shutil.copy(os.path.join(up_settings.pismcode_dir,"bin","pismr"),
+        shutil.copy(os.path.join(up_settings.pismcode_dir,
+                                 up_settings.pism_code_version,
+                                 "bin","pismr"),
                     os.path.join(output_path,"bin"))
 
     # write a custom parameter file to output path.

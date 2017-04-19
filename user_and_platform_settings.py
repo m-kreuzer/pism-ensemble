@@ -9,7 +9,7 @@ import os
 import pwd
 
 ## create run scripts if True.
-create_smoothing_script = False
+create_smoothing_script = True
 create_full_physics_script = True
 
 ## could either be for smoothing and nomass, or for full physics run
@@ -20,8 +20,13 @@ username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
 
 experiment_dir = os.path.join("/home/",username,"pism_experiments")
+# base pism code directory
 pismcode_dir = os.path.join("/home/",username,"pism")
+# specific version as subfolder.
+# create_ensemble will try to copy pismcode_dir/pism_code_version/bin/pismr
+pism_code_version = "pismpik"
 working_dir = "/p/tmp/mengel/pism_out"
 input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 pism_mpi_do = "mpiexec.hydra -bootstrap slurm -n"
+# where to look for the executable in the output directory
 pism_executable = "./bin/pismr"

@@ -12,13 +12,6 @@ thisdir=`echo $PWD`
 outdir=$working_dir/$runname
 PISM_EXEC=$pism_exec
 
-echo $outdir
-
-# create output directory and copy executable and source
-mkdir -p $outdir/bin
-mkdir -p $outdir/src
-mkdir -p $outdir/log
-
 # get new pism code if fetch is argument
 if [ "$1" = "fetch" ]
   then
@@ -69,7 +62,7 @@ output_opts="$extra_opts $snaps_opts $ts_opts"
 ###### boundary conditions
 atm_opts="-surface simple -atmosphere given -atmosphere_given_file $infile"
 ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}}e-5 \
-            -overturning_coeff {{overturning_coeff}}"
+            -overturning_coeff {{overturning_coeff}}e6"
 calv_opts="-calving ocean_kill -ocean_kill_file $infile"
 bed_opts="-bed_def none -hydrology null"
 subgl_opts="-subgl -no_subgl_basal_melt"
