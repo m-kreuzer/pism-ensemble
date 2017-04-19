@@ -64,9 +64,9 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
 
     pae.write_pism_runscript(up_settings, "submit.template.sh", runscript_path,
                              submit_class = "short",
-                             cluster_runtime = "1-00:00:00",
+                             cluster_runtime = "0-23:00:00",
                              ensemble_name = ensemble_member_name,
-                             number_of_cores = 64,
+                             number_of_cores = 16,
                              username = up_settings.username,
                              pism_run_script = pism_run_script
                              )

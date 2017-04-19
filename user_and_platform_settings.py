@@ -13,6 +13,7 @@ create_smoothing_script = True
 create_full_physics_script = True
 
 ## could either be for smoothing and nomass, or for full physics run
+## FIXME: currently unused
 # runscript_template = "run_smoothing_nomass.template.sh"
 runscript_template = "run_full_physics.template.sh"
 
@@ -23,7 +24,7 @@ experiment_dir = os.path.join("/home/",username,"pism_experiments")
 # base pism code directory
 pismcode_dir = os.path.join("/home/",username,"pism")
 # specific version as subfolder.
-# create_ensemble will try to copy pismcode_dir/pism_code_version/bin/pismr
+# create_ensemble will try to copy the pismcode_dir/pism_code_version/bin/pismr
 pism_code_version = "pismpik"
 working_dir = "/p/tmp/mengel/pism_out"
 input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"

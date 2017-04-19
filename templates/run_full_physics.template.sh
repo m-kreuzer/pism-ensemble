@@ -49,8 +49,7 @@ grid="{{grid}}"
 infile={{start_from_file}}
 
 ###### output settings
-start_year=100000
-end_year=200000
+length=100000
 extratm=0:100:1000000
 timestm=0:1:1000000
 snapstm=0:500:1000000
@@ -63,7 +62,8 @@ output_opts="$extra_opts $snaps_opts $ts_opts"
 atm_opts="-surface simple -atmosphere given -atmosphere_given_file $infile"
 ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}}e-5 \
             -overturning_coeff {{overturning_coeff}}e6"
-calv_opts="-calving ocean_kill -ocean_kill_file $infile"
+calv_opts="-calving eigen_calving,thickness_calving -eigen_calving_K 1e17  \
+           -thickness_calving_threshold 200"
 bed_opts="-bed_def none -hydrology null"
 subgl_opts="-subgl -no_subgl_basal_melt"
 
@@ -75,11 +75,8 @@ stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{sia_enhancemen
 ###### technical
 init_opts="-i $infile -config my_pism_config.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o equi.nc"
-
-## allow for batch preparation of runs (set runit to false by script)
-runit=true
-if [ "$runit" = false ]; then exit; fi
+run_opts="-y $length -o_format netcdf4_parallel -verbose 2 \
+          -pik -o equi.nc"
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"

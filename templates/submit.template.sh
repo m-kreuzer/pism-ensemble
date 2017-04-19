@@ -21,7 +21,8 @@ runname=`echo $PWD | awk -F/ '{print $NF}'`
 outdir=$working_dir/$runname
 
 export PISM_ON_CLUSTER=1
-./{{pism_run_script}} $SLURM_NTASKS > $outdir/log/pism.out
+./run_smoothing_nomass.sh $SLURM_NTASKS > $outdir/log/pism.out
+./run_full_physics.sh $SLURM_NTASKS >> $outdir/log/pism.out
 echo run finished at `date`                     >> ./log/srunInfo
 
 

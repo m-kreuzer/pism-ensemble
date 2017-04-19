@@ -1,6 +1,8 @@
 
 """
 Settings for the PISM model.
+Besides the ensemble_name, model parameters that are parsed to
+the PISM run scripts should be set here.
 This should only be commited for major changes affecting all users.
 """
 
@@ -14,9 +16,9 @@ resolution = 20 # in km
 input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_20km.nc"
 ocean_file = "schmidtko/schmidtko_20km_means.nc"
-#
-start_from_file = "/p/tmp/mengel/pism_out/pismpik_020_equilibriumtesting_20km_03/no_mass.nc"
-
+# from where the full physics simulation starts.
+# start_from_file = "/p/tmp/mengel/pism_out/pismpik_020_equilibriumtesting_20km_03/no_mass.nc"
+start_from_file = "no_mass.nc"
 
 # ensemble parameters
 ssa_e = np.array([0.5,1.0])
@@ -33,13 +35,9 @@ ensemble_variables = {"sia":sia_e,"ssa":ssa_e,"ovC":overturning_coeff,"gamT":gam
 # the "long" names here are used within the code.
 # TODO: providing shortnames here, and longnames above may be clearer.
 ensemble_longnames = {"sia":"sia_e","ssa":"ssa_e","ovC":"overturning_coeff","gamT":"gamma_T"}
-# sort by name and keep this sorting
-ensemble_variables = collections.OrderedDict(
-    sorted(ensemble_variables.items(), key=lambda t: t[0]))
 
 extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"
                    "theta_ocean,shelfbmassflux,shelfbtemp")
-
 timeseries_variables = ("ivol,imass,slvol,iareag,iareaf,sub_shelf_ice_flux,"
                         "discharge_flux,max_hor_vel,ienthalpy,max_diffusivity,dt")
 
@@ -55,3 +53,8 @@ grids = {
     # 2km grid: vertical resolution as from spinup.sh greenland-std example
     2:"-Mx 3000 -My 3000 -Lz 5000 -Lbz 2000 -Mz 501 -Mbz 41 -skip -skip_max 50"
 }
+
+## no edits below
+# sort by name and keep this sorting
+ensemble_variables = collections.OrderedDict(
+    sorted(ensemble_variables.items(), key=lambda t: t[0]))

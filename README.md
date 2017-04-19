@@ -2,13 +2,22 @@
 
 
 This code aims at easy and transparent creation of PISM run scripts.
-It is specific for the Antarctic ice sheet and works across HPC platforms.
+It is specific for the Antarctic ice sheet and should work across HPC platforms.
 
 ### Usage
 Edit `user_and_platform_settings.py` and `pism_setting.py` so that they
 fit your needs.
 
-Then run `python create_experiment.py`
+For testing and creating a single experiment, run
+`python create_experiment.py` directly.
+
+To create an ensemble of experiments, run
+`python create_ensemble.py`
+
+The parameters varied within the ensemble are set in `ensemble_variables`
+in `pism_settings.py`. Experiment names within an ensemble are created as
+
+`(ensemble_name)_(param_name1)_(param_value1)_(param_name2)_(param_value2)_...`
 
 ### Directory structure for experiments
 

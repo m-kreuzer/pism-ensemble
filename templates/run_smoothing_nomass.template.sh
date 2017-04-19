@@ -55,7 +55,7 @@ extratm=0:100:1000000
 timestm=0:1:1000000
 snapstm=0:100:1000000
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
-ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
+ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries_smoothing.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
 output_opts="$extra_opts $snaps_opts $ts_opts"
 
@@ -76,10 +76,6 @@ init_opts="-bootstrap -i $infile $grid -config my_pism_config.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o smoothing.nc"
 
-## allow for batch preparation of runs (set runit to false by script)
-runit=true
-if [ "$runit" = false ]; then exit; fi
-
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
 
@@ -95,7 +91,7 @@ extratm=0:2000:1000000
 timestm=0:100:1000000
 snapstm=0:2000:1000000
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
-ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
+ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries_no_mass.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
 output_opts="$extra_opts $snaps_opts $ts_opts"
 
@@ -109,10 +105,6 @@ stress_opts="-no_mass"
 init_opts="-i $infile -config my_pism_config.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-ye $end_year -o_format netcdf4_parallel -pik -o no_mass.nc"
-
-## allow for batch preparation of runs (set runit to false by script)
-runit=true
-if [ "$runit" = false ]; then exit; fi
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
