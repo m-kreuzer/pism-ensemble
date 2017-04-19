@@ -38,7 +38,7 @@ pae.write_pism_runscript(up_settings, "submit.template.sh", runscript_path,
                          ensemble_name = ps.ensemble_name,
                          number_of_cores = 16,
                          username = up_settings.username,
-                         pism_run_script = "run_smoothing.sh"
+                         pism_run_script = "run_smoothing_nomass.sh"
                          )
 
 

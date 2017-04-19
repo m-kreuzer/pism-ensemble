@@ -53,6 +53,8 @@ atmfile=$infile
 oceanfile=$input_data_dir/{{ocean_file}}
 grid="{{grid}}"
 
+######## SMOOTHING ########
+
 ###### output settings
 start_year=100000
 end_year=100200
@@ -78,8 +80,8 @@ stress_opts="-stress_balance sia -sia_flow_law gpbld -sia_e {{sia_enhancement}}"
 
 ###### technical
 init_opts="-bootstrap -i $infile $grid -config my_pism_config.nc"
-## netcdf4_parallel needs compilation with
-run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o final.nc"
+## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
+run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o smoothing.nc"
 
 ## allow for batch preparation of runs (set runit to false by script)
 runit=true
@@ -90,8 +92,37 @@ options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_
 
 cd $outdir
 $PISM_DO $options
-#gdb --args $PISM_DO $options
-# mpiexec -n 4
-# valgrind --tool=memcheck -q --num-callers=20 --log-file=valgrind.log.%p $PISM_DO -malloc off $options
 
-# -i /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/pism_bedmap2_racmo_uplift_velrignot_lgmokill_15km.nc -bootstrap -Mx 400 -My 400 -Lz 7000 -Lbz 2000 -Mz 141 -Mbz 21 -calving ocean_kill -ocean_kill_file /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/pism_bedmap2_racmo_uplift_velrignot_lgmokill_15km.nc -bed_def none -hydrology null -atmosphere pik_temp -temp_era_interim -atmosphere_pik_temp_file /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/pism_bedmap2_racmo_uplift_velrignot_lgmokill_15km.nc -surface pdd -ocean cavity -ocean_cavity_file /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/initdata/Schmidtko.jouzel07temponly_basins_constPD.nc -gamma_T 1.0e-5 -overturning_coeff 0.8e6 -value_C 0.8e6 -exclude_icerises -number_of_basins 20 -continental_shelf_depth -2000 -sia_e 2.0 -pik -topg_to_phi 1.0,45.0,-500.0,1000.0 -bed_smoother_range 5.0e3 -y 200 -o /p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/results/result_boot_15km.nc -options_left -verbose 2 -o_order zyx -o_size big
+######## NO MASS ########
+
+infile=smoothing.nc
+
+end_year=300000
+extratm=0:2000:1000000
+timestm=0:100:1000000
+snapstm=0:2000:1000000
+extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
+ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
+snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
+output_opts="$extra_opts $snaps_opts $ts_opts"
+
+###### boundary conditions
+
+
+###### ice physics
+stress_opts="-no_mass"
+
+###### technical
+init_opts="-i $infile -config my_pism_config.nc"
+## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
+run_opts="-ye $end_year -o_format netcdf4_parallel -pik -o no_mass.nc"
+
+## allow for batch preparation of runs (set runit to false by script)
+runit=true
+if [ "$runit" = false ]; then exit; fi
+
+options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
+         $basal_opts $stress_opts $output_opts"
+
+cd $outdir
+$PISM_DO $options
