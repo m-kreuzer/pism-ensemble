@@ -17,7 +17,7 @@ To create an ensemble of experiments, run
 The parameters varied within the ensemble are set in `ensemble_variables`
 in `pism_settings.py`. Experiment names within an ensemble are created as
 
-`(ensemble_name)_(param_name1)_(param_value1)_(param_name2)_(param_value2)_...`
+`(ensemble_name)_(param_name1)(param_value1)_(param_name2)(param_value2)_...`
 
 ### Directory structure for experiments
 
@@ -33,7 +33,11 @@ working_dir/ensemble_name
 
 `experiment_dir` and `working_dir` are set in  `user_and_platform_settings.py`.
 `ensemble_name` is set in `pism_setting.py`.
-The directory structure is currently hard-coded.
+The directory structure is currently hard-coded. Standard values are:
+
+`experiment_dir = /home/(username)/pism_experiments`
+
+`working_dir = /p/tmp/(username)/pism_out`
 
 ### Authors
 Written by Matthias Mengel, based at Potsdam Institute for Climate Impact Research.

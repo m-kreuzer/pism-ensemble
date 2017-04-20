@@ -26,7 +26,7 @@ pismcode_dir = os.path.join("/home/",username,"pism")
 # specific version as subfolder.
 # create_ensemble will try to copy the pismcode_dir/pism_code_version/bin/pismr
 pism_code_version = "pismpik"
-working_dir = "/p/tmp/mengel/pism_out"
+working_dir = os.path.join("/p/tmp/",username,"pism_out")
 input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 pism_mpi_do = "mpiexec.hydra -bootstrap slurm -n"
 # where to look for the executable in the output directory
