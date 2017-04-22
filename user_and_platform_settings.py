@@ -17,6 +17,7 @@ create_full_physics_script = True
 # runscript_template = "run_smoothing_nomass.template.sh"
 runscript_template = "run_full_physics.template.sh"
 
+cluster_runtime = "0-23:50:00"
 username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
 

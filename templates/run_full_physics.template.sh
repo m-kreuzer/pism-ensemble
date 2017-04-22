@@ -50,7 +50,7 @@ infile={{start_from_file}}
 
 ###### output settings
 length=100000
-extratm=0:100:1000000
+extratm=0:500:1000000
 timestm=0:1:1000000
 snapstm=0:500:1000000
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
@@ -59,7 +59,7 @@ snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size med
 output_opts="$extra_opts $snaps_opts $ts_opts"
 
 ###### boundary conditions
-atm_opts="-surface simple -atmosphere given -atmosphere_given_file $infile"
+atm_opts="-surface simple -atmosphere given -atmosphere_given_file $atmfile"
 ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}}e-5 \
             -overturning_coeff {{overturning_coeff}}e6"
 calv_opts="-calving eigen_calving,thickness_calving -eigen_calving_K 1e17  \

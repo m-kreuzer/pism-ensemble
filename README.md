@@ -12,12 +12,14 @@ For testing and creating a single experiment, run
 `python create_experiment.py` directly.
 
 To create an ensemble of experiments, run
-`python create_ensemble.py`
+`python create_ensemble.py`.
 
 The parameters varied within the ensemble are set in `ensemble_variables`
 in `pism_settings.py`. Experiment names within an ensemble are created as
 
 `(ensemble_name)_(param_name1)(param_value1)_(param_name2)(param_value2)_...`
+
+Submit the ensemble with `python submit_ensemble.py`.
 
 ### Directory structure for experiments
 

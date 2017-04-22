@@ -51,7 +51,7 @@ grid="{{grid}}"
 ###### output settings
 start_year=100000
 end_year=100200
-extratm=0:100:1000000
+extratm=0:10:1000000
 timestm=0:1:1000000
 snapstm=0:100:1000000
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
@@ -61,8 +61,7 @@ output_opts="$extra_opts $snaps_opts $ts_opts"
 
 ###### boundary conditions
 atm_opts="-surface simple -atmosphere given -atmosphere_given_file $infile"
-ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}}e-5 \
-            -overturning_coeff {{overturning_coeff}}e6"
+ocean_opts="-ocean pik -meltfactor_pik 5e-3"
 calv_opts="-calving ocean_kill -ocean_kill_file $infile"
 bed_opts="-bed_def none -hydrology null"
 subgl_opts="-subgl -no_subgl_basal_melt"
@@ -86,7 +85,7 @@ $PISM_DO $options
 
 infile=smoothing.nc
 
-end_year=300000
+end_year=200000
 extratm=0:2000:1000000
 timestm=0:100:1000000
 snapstm=0:2000:1000000
@@ -94,8 +93,6 @@ extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{e
 ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries_no_mass.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
 output_opts="$extra_opts $snaps_opts $ts_opts"
-
-###### boundary conditions
 
 
 ###### ice physics

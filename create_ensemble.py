@@ -11,7 +11,7 @@ import create_experiment as ce; reload(ce)
 parameter_combinations = list(itertools.product(*ps.ensemble_variables.values()))
 parameter_names = ps.ensemble_variables.keys()
 
-for pc in parameter_combinations[0:4]:
+for pc in parameter_combinations[0:]:
 
     ens_member_id = "_".join([k+str(pc[i]) for i,k in
                               enumerate(parameter_names)])

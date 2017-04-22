@@ -10,7 +10,7 @@ import os
 import numpy as np
 import collections
 
-ensemble_name = "pismpik_021_equi20km"
+ensemble_name = "pismpik_024_equi20km"
 resolution = 20 # in km
 ## for creation of input data, see icesheets/pism_input project.
 input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
