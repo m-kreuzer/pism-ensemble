@@ -73,7 +73,7 @@ stress_opts="-stress_balance sia -sia_flow_law gpbld -sia_e {{sia_enhancement}}"
 ###### technical
 init_opts="-bootstrap -i $infile $grid -config my_pism_config.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys $start_year -ye $end_year -o_format netcdf4_parallel -pik -o smoothing.nc"
+run_opts="-ys $start_year -ye $end_year -pik -o smoothing.nc"
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
