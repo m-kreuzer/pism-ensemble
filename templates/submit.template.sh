@@ -20,6 +20,13 @@ source set_environment.sh
 runname=`echo $PWD | awk -F/ '{print $NF}'`
 outdir=$working_dir/$runname
 
+module purge
+module load pism/stable08_srunpetsc
+
+# needed for srun
+export I_MPI_PMI_LIBRARY=/p/system/slurm/lib/libpmi.so
+export OMP_NUM_THREADS=1
+
 export PISM_ON_CLUSTER=1
 ./run_smoothing_nomass.sh $SLURM_NTASKS > $outdir/log/pism.out
 ./run_full_physics.sh $SLURM_NTASKS >> $outdir/log/pism.out

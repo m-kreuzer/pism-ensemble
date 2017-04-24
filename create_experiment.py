@@ -66,7 +66,7 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              submit_class = "short",
                              cluster_runtime = up_settings.cluster_runtime,
                              ensemble_name = ensemble_member_name,
-                             number_of_cores = 16,
+                             number_of_cores = up_settings.number_of_cores,
                              username = up_settings.username,
                              pism_run_script = pism_run_script
                              )

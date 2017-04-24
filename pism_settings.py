@@ -10,12 +10,12 @@ import os
 import numpy as np
 import collections
 
-ensemble_name = "pismpik_024_equi20km"
-resolution = 20 # in km
+ensemble_name = "pismpik_0255_equi15km"
+resolution = 15 # in km
 ## for creation of input data, see icesheets/pism_input project.
 input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
-input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_20km.nc"
-ocean_file = "schmidtko/schmidtko_20km_means.nc"
+input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_"+str(resolution)+"km.nc"
+ocean_file = "schmidtko/schmidtko_"+str(resolution)+"km_means.nc"
 # from where the full physics simulation starts.
 # start_from_file = "/p/tmp/mengel/pism_out/pismpik_020_equilibriumtesting_20km_03/no_mass.nc"
 start_from_file = "no_mass.nc"
@@ -38,8 +38,14 @@ ensemble_longnames = {"sia":"sia_e","ssa":"ssa_e","ovC":"overturning_coeff","gam
 
 extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"
                    "theta_ocean,shelfbmassflux,shelfbtemp")
-timeseries_variables = ("ivol,imass,slvol,iareag,iareaf,sub_shelf_ice_flux,"
-                        "discharge_flux,max_hor_vel,ienthalpy,max_diffusivity,dt")
+timeseries_variables = ("volume_glacierized_temperate,volume_glacierized_grounded,"
+                         "volume_glacierized_shelf,volume_glacierized_cold,volume_glacierized,"
+                         "mass_glacierized,enthalpy_glacierized,area_glacierized_temperate_base,"
+                         "area_glacierized_grounded,area_glacierized_shelf,area_glacierized_cold_base,"
+                         "area_glacierized,volume_rate_of_change_glacierized,"
+                         "mass_rate_of_change_glacierized,"
+                         "slvol,sub_shelf_ice_flux,"
+                         "discharge_flux,max_hor_vel,max_diffusivity,dt")
 
 # TODO: should we include skip values here?
 grids = {
