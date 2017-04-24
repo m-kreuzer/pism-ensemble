@@ -26,50 +26,38 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
         os.makedirs(os.path.join(output_path,"log"))
         os.makedirs(os.path.join(output_path,"bin"))
 
-    if up_settings.create_smoothing_script:
-        pism_run_script = "run_smoothing_nomass.sh"
-        pae.write_pism_runscript(up_settings, "run_smoothing_nomass.template.sh", runscript_path,
-                                 input_file = ps.input_file,
-                                 ocean_file = ps.ocean_file,
-                                 extra_variables = ps.extra_variables,
-                                 timeseries_variables = ps.timeseries_variables,
-                                 sia_enhancement = ensemble_params["sia_e"],
-                                 grid = grid,
-                                 gamma_T = ensemble_params["gamma_T"],
-                                 overturning_coeff = ensemble_params["overturning_coeff"]
-                                 )
 
-    if up_settings.create_full_physics_script:
-        pism_run_script = "run_full_physics.sh"
-        pae.write_pism_runscript(up_settings, "run_full_physics.template.sh", runscript_path,
-                                 input_file = ps.input_file,
-                                 ocean_file = ps.ocean_file,
-                                 start_from_file = ps.start_from_file,
-                                 extra_variables = ps.extra_variables,
-                                 timeseries_variables = ps.timeseries_variables,
-                                 sia_enhancement = ensemble_params["sia_e"],
-                                 ssa_enhancement = ensemble_params["ssa_e"],
-                                 grid = grid,
-                                 gamma_T = ensemble_params["gamma_T"],
-                                 overturning_coeff = ensemble_params["overturning_coeff"]
-                                 )
+    pae.write_pism_runscript(up_settings, "run_smoothing_nomass.template.sh", runscript_path,
+                             input_file = ps.input_file,
+                             ocean_file = ps.ocean_file,
+                             extra_variables = ps.extra_variables,
+                             timeseries_variables = ps.timeseries_variables,
+                             grid = grid,
+                             ep = ensemble_params )
+
+    pae.write_pism_runscript(up_settings, "run_full_physics.template.sh", runscript_path,
+                             input_file = ps.input_file,
+                             ocean_file = ps.ocean_file,
+                             start_from_file = ps.start_from_file,
+                             extra_variables = ps.extra_variables,
+                             timeseries_variables = ps.timeseries_variables,
+                             grid = grid,
+                             ep = ensemble_params )
 
     pae.write_pism_runscript(up_settings, "set_environment.template.sh", runscript_path,
                              pismcode_dir=up_settings.pismcode_dir,
                              working_dir=up_settings.working_dir,
                              input_data_dir=up_settings.input_data_dir,
                              pism_executable=up_settings.pism_executable,
-                             pism_mpi_do=up_settings.pism_mpi_do
-                             )
+                             pism_mpi_do=up_settings.pism_mpi_do )
 
     pae.write_pism_runscript(up_settings, "submit.template.sh", runscript_path,
-                             submit_class = "short",
+                             submit_class = up_settings.submit_class,
+                             account = up_settings.account,
                              cluster_runtime = up_settings.cluster_runtime,
                              ensemble_name = ensemble_member_name,
                              number_of_cores = up_settings.number_of_cores,
-                             username = up_settings.username,
-                             pism_run_script = pism_run_script
-                             )
+                             username = up_settings.username )
 
     if copy_pism_exec:
         shutil.copy(os.path.join(up_settings.pismcode_dir,

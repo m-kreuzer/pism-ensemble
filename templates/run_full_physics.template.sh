@@ -60,8 +60,8 @@ output_opts="$extra_opts $snaps_opts $ts_opts"
 
 ###### boundary conditions
 atm_opts="-surface simple -atmosphere given -atmosphere_given_file $atmfile"
-ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{gamma_T}}e-5 \
-            -overturning_coeff {{overturning_coeff}}e6"
+ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{ep['gamma_T']}}e-5 \
+            -overturning_coeff {{ep['overturning_coeff']}}e6"
 calv_opts="-calving eigen_calving,thickness_calving -eigen_calving_K 1e17  \
            -thickness_calving_threshold 200"
 bed_opts="-bed_def none -hydrology null"
@@ -69,8 +69,8 @@ subgl_opts="-subgl -no_subgl_basal_melt"
 
 ###### ice physics
 basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000"
-stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{sia_enhancement}} \
-             -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ssa_enhancement}} -ssafd_ksp_rtol 1e-7 "
+stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} \
+             -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
 init_opts="-i $infile -config my_pism_config.nc"

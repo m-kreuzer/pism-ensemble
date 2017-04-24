@@ -3,7 +3,7 @@
 #SBATCH --qos={{submit_class}}
 #SBATCH --time={{cluster_runtime}}
 #SBATCH --job-name={{ensemble_name}}
-#SBATCH --account=anthroia
+#SBATCH --account={{account}}
 #SBATCH --output=./log/slurm_out.out
 #SBATCH --error=./log/slurm_error.err
 #SBATCH --ntasks={{number_of_cores}}

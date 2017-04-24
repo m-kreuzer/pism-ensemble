@@ -19,6 +19,8 @@ runscript_template = "run_full_physics.template.sh"
 
 cluster_runtime = "0-23:50:00"
 number_of_cores = 16
+account = "anthroia"
+submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
 
