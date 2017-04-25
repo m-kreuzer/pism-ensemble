@@ -30,15 +30,15 @@ fi
 
 ###### use only MPI if job is submitted
 if [ -n "${PISM_ON_CLUSTER:+1}" ]; then  # check if env var is set
-  echo "$SCRIPTNAME this run was submitted, use MPI"
+  echo "This run was submitted, use MPI"
   PISM_MPIDO=$pism_mpi_do
-  echo "$SCRIPTNAME      PISM_MPIDO = $PISM_MPIDO"
 else
-  echo "$SCRIPTNAME this is interactive, skip use of MPI"
+  echo "This is interactive, skip use of MPI"
   PISM_MPIDO=""
   NN=""
-  echo "$SCRIPTNAME      PISM_MPIDO = $PISM_MPIDO"
 fi
+
+echo "PISM_MPIDO = $PISM_MPIDO"
 PISM_DO="$PISM_MPIDO $NN $PISM_EXEC"
 
 infile=$input_data_dir/{{input_file}}
@@ -78,6 +78,8 @@ run_opts="-ys $start_year -ye $end_year -pik -o smoothing.nc"
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
 
+echo "### Smoothing options: ###"
+echo $PISM_DO $options
 cd $outdir
 $PISM_DO $options
 
@@ -106,5 +108,7 @@ run_opts="-ye $end_year -o_format netcdf4_parallel -pik -o no_mass.nc"
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
 
+echo "### No-mass options: ###"
+echo $PISM_DO $options
 cd $outdir
 $PISM_DO $options
