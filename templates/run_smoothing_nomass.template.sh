@@ -71,7 +71,7 @@ basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000"
 stress_opts="-stress_balance sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}}"
 
 ###### technical
-init_opts="-bootstrap -i $infile $grid -config my_pism_config.nc"
+init_opts="-bootstrap -i $infile $grid"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-ys $start_year -ye $end_year -pik -o smoothing.nc"
 
@@ -96,14 +96,13 @@ ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeserie
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
 output_opts="$extra_opts $snaps_opts $ts_opts"
 
-
 ###### ice physics
 stress_opts="-no_mass"
 
 ###### technical
-init_opts="-i $infile -config my_pism_config.nc"
+init_opts="-i $infile"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ye $end_year -o_format netcdf4_parallel -pik -o no_mass.nc"
+run_opts="-ye $end_year -pik -o no_mass.nc"
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
@@ -112,3 +111,7 @@ echo "### No-mass options: ###"
 echo $PISM_DO $options
 cd $outdir
 $PISM_DO $options
+
+# preliminary to avoid SSA divergence at beginning of full physics run
+# TODO: remove.
+ncks -x -v tillwat no_mass.nc no_mass_reduced.nc

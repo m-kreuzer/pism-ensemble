@@ -13,8 +13,9 @@ outdir=$working_dir/$runname
 PISM_EXEC=$pism_exec
 
 # get new pism code if fetch is argument
-if [ "$1" = "fetch" ]
-  then
+if [ "$1" = "fetch" ]; then
+  mkdir -p $outdir/bin/
+  mkdir -p $outdir/log/
   rsync -aCv $pismcode_dir/$codever/bin/pismr $outdir/bin/
   cd $pismcode_dir/$codever
   echo ------ `date` --- $RUNNAME ------                  >> $thisdir/log/versionInfo
@@ -24,7 +25,7 @@ if [ "$1" = "fetch" ]
 fi
 
 NN=2  # default number of processors
-if [ $# -gt 0 ] ; then  # if user says "exp.sh 8" then NN = 8
+if [ $# -gt 0 ]; then  # if user says "exp.sh 8" then NN = 8
   NN="$1"
 fi
 
@@ -73,7 +74,7 @@ stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} 
              -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
-init_opts="-i $infile -config my_pism_config.nc"
+init_opts="-i $infile -bootstrap $grid"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-y $length -pik -o equi.nc -verbose 2 -options_left"
 
