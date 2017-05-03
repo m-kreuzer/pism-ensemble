@@ -6,23 +6,17 @@ create_experiments.py.
 import itertools
 import shutil
 import pism_settings as ps; reload(ps)
+import pism_ant_equi.pism_ant_equi as pae; reload(pae)
 import create_experiment as ce; reload(ce)
 
-parameter_combinations = list(itertools.product(*ps.ensemble_variables.values()))
-parameter_names = ps.ensemble_variables.keys()
+parameter_names,ensemble_members = pae.span_ensemble(ps.ensemble_variables)
 
-for pc in parameter_combinations[0:]:
+for em_id in ensemble_members.keys()[0:2]:
 
-    ens_member_id = "_".join([k+str(pc[i]) for i,k in
-                              enumerate(parameter_names)])
-    ens_member_name = ps.ensemble_name+"_"+ens_member_id
-    # create dict with long names for parameters as keys
-    # as used in create_experiment
-    ensemble_params = {ps.ensemble_longnames[k]:pc[i] for i,k in
-                       enumerate(parameter_names)}
+    ens_params = ensemble_members[em_id]
+    ens_member_name = ps.ensemble_name+"_"+em_id
 
     ce.create_experiment(ensemble_member_name=ens_member_name,
-                         ensemble_params=ensemble_params,
-                         copy_pism_exec=True)
-
+                         ensemble_params=ens_params,
+                         copy_pism_exec=False)
 

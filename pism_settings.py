@@ -10,7 +10,7 @@ import os
 import numpy as np
 import collections
 
-ensemble_name = "pismpik_026_testing"
+ensemble_name = "pismpik_029_test"
 resolution = 15 # in km
 ## for creation of input data, see icesheets/pism_input project.
 input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
@@ -18,7 +18,7 @@ input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_"+str(resolution)+"km.nc"
 ocean_file = "schmidtko/schmidtko_"+str(resolution)+"km_means.nc"
 # from where the full physics simulation starts.
 # start_from_file = "/p/tmp/mengel/pism_out/pismpik_020_equilibriumtesting_20km_03/no_mass.nc"
-start_from_file = "no_mass.nc"
+start_from_file = "/p/tmp/mengel/pism_out/pismpik_028_notillwat/no_mass_reduced.nc"
 
 # ensemble parameters
 ssa_e = np.array([0.5,1.0])
@@ -30,11 +30,7 @@ overturning_coeff = np.arange(0.5,6.5+3.,3.)
 gamma_T = np.arange(1,5+2.,2.)
 
 # we create PISM run scripts for all the following parameter combinations
-# the "short" dict keys here go into the experiment name
-ensemble_variables = {"sia":sia_e,"ssa":ssa_e,"ovC":overturning_coeff,"gamT":gamma_T}
-# the "long" names here are used within the code.
-# TODO: providing shortnames here, and longnames above may be clearer.
-ensemble_longnames = {"sia":"sia_e","ssa":"ssa_e","ovC":"overturning_coeff","gamT":"gamma_T"}
+ensemble_variables = {"sia_e":sia_e,"ssa_e":ssa_e,"overturning_coeff":overturning_coeff,"gamma_T":gamma_T}
 
 extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"
                    "theta_ocean,shelfbmassflux,shelfbtemp")
