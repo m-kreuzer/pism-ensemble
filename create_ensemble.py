@@ -13,7 +13,7 @@ ensemble_members = pae.span_ensemble(ps.ensemble_variables,
                                      use_numbers=up_settings.use_numbers_as_ens_id)
 
 
-for em_id in ensemble_members.index[0:2]:
+for em_id in ensemble_members.index:
 
     ens_params = ensemble_members.ix[em_id].to_dict()
     ens_member_name = ps.ensemble_name+"_"+em_id
@@ -22,4 +22,8 @@ for em_id in ensemble_members.index[0:2]:
                          ensemble_params=ens_params,
                          copy_pism_exec=False)
 
-ensemble_members.to_csv(up_settings.ensemble_paramater_map,sep=" ")
+## Read the here written csv file somewhere else with
+## df = pandas.read_csv(file_name,index_col=0,sep=" ")
+ensemble_members.to_csv(up_settings.ensemble_paramater_map,sep=" ",
+                        index_label="ens_member")
+print "Wrote ensemble map file to", up_settings.ensemble_paramater_map
