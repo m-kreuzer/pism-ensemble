@@ -12,10 +12,11 @@ import pwd
 create_smoothing_script = True
 create_full_physics_script = True
 
-## could either be for smoothing and nomass, or for full physics run
-## FIXME: currently unused
-# runscript_template = "run_smoothing_nomass.template.sh"
-runscript_template = "run_full_physics.template.sh"
+## use hashes or numbers as ensemble member identifiers
+use_numbers_as_ens_id = False
+
+## find here the mapping between ensemble member ids and the varied parameters.
+ensemble_paramater_map = "ensemble_map.txt"
 
 cluster_runtime = "0-23:50:00"
 number_of_cores = 64

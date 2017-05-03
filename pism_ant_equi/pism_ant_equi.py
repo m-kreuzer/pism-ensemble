@@ -4,6 +4,8 @@ import jinja2
 import subprocess
 import itertools
 import hashlib
+import collections
+import pandas
 
 def write_pism_runscript(up_settings, template, runscript_path, **kwargs):
 
@@ -32,16 +34,19 @@ def span_ensemble(ensemble_variables,use_numbers=False,
     parameter_combinations = list(itertools.product(*ensemble_variables.values()))
     parameter_names = ensemble_variables.keys()
 
-    ensemble_members = {}
+    ensemble_members = collections.OrderedDict()
 
     for i,pc in enumerate(parameter_combinations):
 
         if use_numbers:
-            em_id = i + start_number
+            em_id = str(i + start_number)
         else:
             em_id = hashlib.sha224(str(pc)).hexdigest()[0:10]
 
         em_params = {name:pc[i] for i,name in enumerate(parameter_names)}
         ensemble_members[em_id] = em_params
 
-    return parameter_names,ensemble_members
+    ensemble_members = pandas.DataFrame(ensemble_members)
+    ensemble_members = ensemble_members.transpose()
+
+    return ensemble_members
