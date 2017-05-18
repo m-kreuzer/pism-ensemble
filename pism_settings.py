@@ -16,7 +16,7 @@ if up_settings.create_full_physics_script:
   ensemble_name = "pismpik_029_test"
   resolution = 15 # in km
   ## for creation of input data, see icesheets/pism_input project.
-  input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+  #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
   input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_"+str(resolution)+"km.nc"
   ocean_file = "schmidtko/schmidtko_"+str(resolution)+"km_means.nc"
   # from where the full physics simulation starts.
@@ -44,11 +44,14 @@ elif up_settings.create_paleo_script:
   ensemble_name = "pism_paleo01"
   resolution = 15 # in km
   ## for creation of input data, see icesheets/pism_input project.
-  input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
-  input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_"+str(resolution)+"km.nc"
-  ocean_file = "schmidtko/schmidtko_"+str(resolution)+"km_means.nc"
+  #input_data_path = "/p/tmp/albrecht/pism17/pismInput"
+  input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+str(resolution)+"km.nc"
+  ocean_file = input_file
   # from where the paleo simulation starts.
-  start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/results/result_nomass_15km.nc"
+  start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
+  tforce_file = "timeseries_edc-wdc_temp.nc"
+  pforce_file = "timeseries_edc-wdc_accum_1.05.nc"
+  slforce_file = "imbrie06peltier15_sl.nc"
 
   # paleo ensemble paramters 
   # mantle viscosity in 1e21 Pa s, e21 is set in run script.

@@ -29,16 +29,25 @@ submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
 
-experiment_dir = os.path.join("/home/",username,"pism17/pism_experiments")
-# base pism code directory
-pismcode_dir = os.path.join("/home/",username,"pism17")
-# specific version as subfolder.
-
-# create_ensemble will try to copy the pismcode_dir/pism_code_version/bin/pismr
-pism_code_version = "pism0.7_pik"
-working_dir = os.path.join("/p/tmp/",username,"pism17/pismOut/pism_paleo")
-#input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
+##########################################################################
+# matthias
+experiment_dir = os.path.join("/home/",username,"pism_experiments")
+pismcode_dir = os.path.join("/home/",username,"pism")
+pism_code_version = "pismpik"
+working_dir = os.path.join("/p/tmp/",username,"pism_out")
 input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+
+if create_paleo_script: # torsten
+  experiment_dir = os.path.join("/home/",username,"pism17/pism_experiments")
+  # base pism code directory
+  pismcode_dir = os.path.join("/home/",username,"pism17")
+  # specific version as subfolder.
+
+  # create_ensemble will try to copy the pismcode_dir/pism_code_version/bin/pismr
+  pism_code_version = "pism0.7_pik"
+  working_dir = os.path.join("/p/tmp/",username,"pism17/pismOut/pism_paleo")
+  input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
+############################################################################
 
 # PIK cluster with slurm-specific compile, options for petsc
 pism_mpi_do = "srun -n"

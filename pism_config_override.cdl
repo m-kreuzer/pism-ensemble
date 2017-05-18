@@ -15,7 +15,7 @@ pism_overrides:surface.pdd.factor_ice = 8.8e-3;
 pism_overrides:surface.pdd.std_dev = 5.0;
 
 //sliding
-pism_overrides:inverse.ssa.velocity_scale = 100;
+pism_overrides:basal_resistance.pseudo_plastic.u_threshold = 100.0;
 pism_overrides:basal_resistance.pseudo_plastic.q = 0.25;
 pism_overrides:hydrology.tillwat_decay_rate = 3.16887646154128e-11;
 pism_overrides:basal_yield_stress.mohr_coulomb.till_effective_fraction_overburden = 0.02;

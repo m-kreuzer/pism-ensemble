@@ -78,7 +78,7 @@ stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} 
              -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
-init_opts="-i $infile -bootstrap $grid -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
+init_opts="-i $infile -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-y $length -pik -o equi.nc -verbose 2 -options_left"
 
