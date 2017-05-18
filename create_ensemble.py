@@ -10,13 +10,24 @@ import pism_ant_equi.pism_ant_equi as pae; reload(pae)
 import create_experiment as ce; reload(ce)
 
 ensemble_members = pae.span_ensemble(ps.ensemble_variables,
-                                     use_numbers=up_settings.use_numbers_as_ens_id)
+                                     start_number=up_settings.initial_ensemble_number)
 
+print ensemble_members
+#ens_mem_num={}
 
 for em_id in ensemble_members.index:
 
     ens_params = ensemble_members.ix[em_id].to_dict()
-    ens_member_name = ps.ensemble_name+"_"+em_id
+
+    em_id_num=""
+    if up_settings.use_numbers_as_ens_id:
+        em_id_num = em_id.split(" ")[1]
+    else:
+        em_id_num = em_id.split(" ")[0]
+
+    ens_member_name = ps.ensemble_name+"_"+em_id_num
+
+    print ens_params,ens_member_name,em_id
 
     ce.create_experiment(ensemble_member_name=ens_member_name,
                          ensemble_params=ens_params,
@@ -26,4 +37,11 @@ for em_id in ensemble_members.index:
 ## df = pandas.read_csv(file_name,index_col=0,sep=" ")
 ensemble_members.to_csv(up_settings.ensemble_paramater_map,sep=" ",
                         index_label="ens_member")
+
+#with open(up_settings.ensemble_paramater_map, 'r') as infile,
+#open(up_settings.ensemble_paramater_map+"test", 'w') as outfile:
+#    data = infile.read()
+#    data = data.replace('"', '')
+#    outfile.write(data)
+
 print "Wrote ensemble map file to", up_settings.ensemble_paramater_map

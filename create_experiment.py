@@ -10,8 +10,10 @@ import pism_ant_equi.pism_ant_equi as pae; reload(pae)
 
 def create_experiment(ensemble_member_name=ps.ensemble_name,
                       ensemble_params={"gamma_T":1.0,"overturning_coeff":1.0,
-                                       "sia_e":2.0,"ssa_e":1.0},
+                                       "sia_e":2.0,"ssa_e":1.0,
+                                       "ppq":0.33,"visc":1.0,"prec":1.05},
                       copy_pism_exec=False):
+
 
     runscript_path = os.path.join(up_settings.experiment_dir,ensemble_member_name)
     output_path = os.path.join(up_settings.working_dir,ensemble_member_name)
@@ -26,8 +28,9 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
         os.makedirs(os.path.join(output_path,"log"))
         os.makedirs(os.path.join(output_path,"bin"))
 
-
-    pae.write_pism_runscript(up_settings, "run_smoothing_nomass.template.sh", runscript_path,
+    if (up_settings.create_smoothing_script):
+      pae.write_pism_runscript(up_settings, "run_smoothing_nomass.template.sh", runscript_path,
+                             code_ver = up_settings.pism_code_version,
                              input_file = ps.input_file,
                              ocean_file = ps.ocean_file,
                              extra_variables = ps.extra_variables,
@@ -35,7 +38,8 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              grid = grid,
                              ep = ensemble_params )
 
-    pae.write_pism_runscript(up_settings, "run_full_physics.template.sh", runscript_path,
+    if (up_settings.create_full_physics_script):
+      pae.write_pism_runscript(up_settings, "run_full_physics.template.sh", runscript_path,
                              input_file = ps.input_file,
                              ocean_file = ps.ocean_file,
                              start_from_file = ps.start_from_file,
@@ -43,6 +47,16 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              timeseries_variables = ps.timeseries_variables,
                              grid = grid,
                              ep = ensemble_params )
+    if (up_settings.create_paleo_script):
+      pae.write_pism_runscript(up_settings, "run_paleo.template.sh", runscript_path,
+                             input_file = ps.input_file,
+                             ocean_file = ps.ocean_file,
+                             start_from_file = ps.start_from_file,
+                             extra_variables = ps.extra_variables,
+                             timeseries_variables = ps.timeseries_variables,
+                             grid = grid,
+                             ep = ensemble_params )
+
 
     pae.write_pism_runscript(up_settings, "set_environment.template.sh", runscript_path,
                              pismcode_dir=up_settings.pismcode_dir,
@@ -57,7 +71,10 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              cluster_runtime = up_settings.cluster_runtime,
                              ensemble_name = ensemble_member_name,
                              number_of_cores = up_settings.number_of_cores,
-                             username = up_settings.username )
+                             username = up_settings.username)
+
+    create_full_physics_script = False
+    create_paleo_script = True
 
     if copy_pism_exec:
         shutil.copy(os.path.join(up_settings.pismcode_dir,

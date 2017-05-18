@@ -7,21 +7,11 @@
 source set_environment.sh
 
 runname=`echo $PWD | awk -F/ '{print $NF}'`
-codever=`echo $PWD | awk -F/ '{print $NF}' | awk -F_ '{print $1}'`
+#codever=`echo $PWD | awk -F/ '{print $NF}' | awk -F_ '{print $1}'`
+codever={{code_ver}}
 thisdir=`echo $PWD`
 outdir=$working_dir/$runname
 PISM_EXEC=$pism_exec
-
-# get new pism code if fetch is argument
-if [ "$1" = "fetch" ]
-  then
-  rsync -aCv $pismcode_dir/$codever/bin/pismr $outdir/bin/
-  cd $pismcode_dir/$codever
-  echo ------ `date` --- $RUNNAME ------                  >> $thisdir/log/versionInfo
-  echo "commit $(git log --pretty=oneline --max-count=1)" >> $thisdir/log/versionInfo
-  echo "branch $( git branch | grep \*)"                  >> $thisdir/log/versionInfo
-  cd $thisdir
-fi
 
 NN=2  # default number of processors
 if [ $# -gt 0 ] ; then  # if user says "exp.sh 8" then NN = 8
@@ -36,7 +26,21 @@ else
   echo "This is interactive, skip use of MPI"
   PISM_MPIDO=""
   NN=""
+  outdir=$thisdir
+
 fi
+
+# get new pism code if fetch is argument
+if [ "$1" = "fetch" ]
+  then
+  rsync -aCv $pismcode_dir/$codever/bin/pismr $outdir/bin/
+  cd $pismcode_dir/$codever
+  echo ------ `date` --- $RUNNAME ------                  >> $thisdir/log/versionInfo
+  echo "commit $(git log --pretty=oneline --max-count=1)" >> $thisdir/log/versionInfo
+  echo "branch $( git branch | grep \*)"                  >> $thisdir/log/versionInfo
+  cd $thisdir
+fi
+
 
 echo "PISM_MPIDO = $PISM_MPIDO"
 PISM_DO="$PISM_MPIDO $NN $PISM_EXEC"

@@ -28,8 +28,21 @@ export I_MPI_PMI_LIBRARY=/p/system/slurm/lib/libpmi.so
 export OMP_NUM_THREADS=1
 
 export PISM_ON_CLUSTER=1
+
+if [ -f "./run_smoothing_nomass.sh" ]
+then
 ./run_smoothing_nomass.sh $SLURM_NTASKS > $outdir/log/pism.out
+fi 
+
+if [ -f "./run_full_physics.sh" ]
+then
 ./run_full_physics.sh $SLURM_NTASKS >> $outdir/log/pism.out
+fi
+
+if [ -f "./run_paleo.sh" ]
+then
+  ./run_paleo.sh $SLURM_NTASKS >> $outdir/log/pism.out
+fi
 echo run finished at `date`                     >> ./log/srunInfo
 
 

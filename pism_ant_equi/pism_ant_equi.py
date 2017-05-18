@@ -28,8 +28,7 @@ def write_pism_runscript(up_settings, template, runscript_path, **kwargs):
     print "Wrote",script_to_write
 
 
-def span_ensemble(ensemble_variables,use_numbers=False,
-                 start_number=0):
+def span_ensemble(ensemble_variables,start_number=0):
 
     parameter_combinations = list(itertools.product(*ensemble_variables.values()))
     parameter_names = ensemble_variables.keys()
@@ -38,10 +37,10 @@ def span_ensemble(ensemble_variables,use_numbers=False,
 
     for i,pc in enumerate(parameter_combinations):
 
-        if use_numbers:
-            em_id = str(i + start_number)
-        else:
-            em_id = hashlib.sha224(str(pc)).hexdigest()[0:10]
+
+        em_id = hashlib.sha224(str(pc)).hexdigest()[0:10]
+
+        em_id += " "+str(i + start_number)
 
         em_params = {name:pc[i] for i,name in enumerate(parameter_names)}
         ensemble_members[em_id] = em_params
