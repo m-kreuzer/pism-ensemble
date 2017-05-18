@@ -7,25 +7,14 @@
 source set_environment.sh
 
 runname=`echo $PWD | awk -F/ '{print $NF}'`
-codever=`echo $PWD | awk -F/ '{print $NF}' | awk -F_ '{print $1}'`
+#codever=`echo $PWD | awk -F/ '{print $NF}' | awk -F_ '{print $1}'`
+codever={{code_ver}}
 thisdir=`echo $PWD`
 outdir=$working_dir/$runname
 PISM_EXEC=$pism_exec
 
-# get new pism code if fetch is argument
-if [ "$1" = "fetch" ]; then
-  mkdir -p $outdir/bin/
-  mkdir -p $outdir/log/
-  rsync -aCv $pismcode_dir/$codever/bin/pismr $outdir/bin/
-  cd $pismcode_dir/$codever
-  echo ------ `date` --- $RUNNAME ------                  >> $thisdir/log/versionInfo
-  echo "commit $(git log --pretty=oneline --max-count=1)" >> $thisdir/log/versionInfo
-  echo "branch $( git branch | grep \*)"                  >> $thisdir/log/versionInfo
-  cd $thisdir
-fi
-
 NN=2  # default number of processors
-if [ $# -gt 0 ]; then  # if user says "exp.sh 8" then NN = 8
+if [ $# -gt 0 ] ; then  # if user says "exp.sh 8" then NN = 8
   NN="$1"
 fi
 
@@ -37,6 +26,20 @@ else
   echo "This is interactive, skip use of MPI"
   PISM_MPIDO=""
   NN=""
+fi
+
+ncgen3 $outdir/pism_config_override.cdl -o $outdir/pism_config_override.nc
+
+# get new pism code if fetch is argument
+if [ "$1" = "fetch" ]; then
+  mkdir -p $outdir/bin/
+  mkdir -p $outdir/log/
+  rsync -aCv $pismcode_dir/$codever/bin/pismr $outdir/bin/
+  cd $pismcode_dir/$codever
+  echo ------ `date` --- $RUNNAME ------                  >> $thisdir/log/versionInfo
+  echo "commit $(git log --pretty=oneline --max-count=1)" >> $thisdir/log/versionInfo
+  echo "branch $( git branch | grep \*)"                  >> $thisdir/log/versionInfo
+  cd $thisdir
 fi
 
 echo "PISM_MPIDO = $PISM_MPIDO"
@@ -75,7 +78,7 @@ stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} 
              -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
-init_opts="-i $infile -bootstrap $grid"
+init_opts="-i $infile -bootstrap $grid -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-y $length -pik -o equi.nc -verbose 2 -options_left"
 

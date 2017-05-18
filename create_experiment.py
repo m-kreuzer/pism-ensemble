@@ -40,6 +40,7 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
 
     if (up_settings.create_full_physics_script):
       pae.write_pism_runscript(up_settings, "run_full_physics.template.sh", runscript_path,
+                             code_ver = up_settings.pism_code_version,
                              input_file = ps.input_file,
                              ocean_file = ps.ocean_file,
                              start_from_file = ps.start_from_file,
@@ -49,6 +50,7 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              ep = ensemble_params )
     if (up_settings.create_paleo_script):
       pae.write_pism_runscript(up_settings, "run_paleo.template.sh", runscript_path,
+                             code_ver = up_settings.pism_code_version,
                              input_file = ps.input_file,
                              ocean_file = ps.ocean_file,
                              start_from_file = ps.start_from_file,
