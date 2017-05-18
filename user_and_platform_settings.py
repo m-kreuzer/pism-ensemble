@@ -22,8 +22,8 @@ if use_numbers_as_ens_id:
 ## find here the mapping between ensemble member ids and the varied parameters.
 ensemble_paramater_map = "ensemble_map.txt"
 
-cluster_runtime = "0-23:50:00"
-number_of_cores = 32
+cluster_runtime = "0-03:50:00"
+number_of_cores = 16
 account = "ice"
 submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name

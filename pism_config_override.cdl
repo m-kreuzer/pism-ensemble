@@ -1,0 +1,19 @@
+netcdf beddef_parameter {
+variables:
+byte pism_overrides;
+
+pism_overrides:bed_deformation.lithosphere_flexural_rigidity = 5.0e24;
+pism_overrides:bed_deformation.mantle_viscosity = 0.5e21;
+
+pism_overrides:atmosphere.precip_exponential_factor_for_temperature = .02;
+
+pism_overrides:surface.pdd.factor_snow = 3.0e-3;
+pism_overrides:surface.pdd.factor_ice = 8.8e-3;
+pism_overrides:surface.pdd.std_dev = 5.0;
+
+pism_overrides:hydrology.tillwat_decay_rate = 3.1e-11;
+pism_overrides:basal_yield_stress.mohr_coulomb.till_effective_fraction_overburden = 0.04;
+
+}
+
+//ncgen -o beddef_config.nc beddef_parameter.cdl

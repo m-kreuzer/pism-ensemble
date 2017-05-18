@@ -73,9 +73,6 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              number_of_cores = up_settings.number_of_cores,
                              username = up_settings.username)
 
-    create_full_physics_script = False
-    create_paleo_script = True
-
     if copy_pism_exec:
         shutil.copy(os.path.join(up_settings.pismcode_dir,
                                  up_settings.pism_code_version,
@@ -85,7 +82,9 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
     # write a custom parameter file to output path.
     # This is an alternative way to tweak parameters.
     subprocess.check_call("ncgen3 pism_config.cdl -o "+
-                          os.path.join(output_path,"my_pism_config.nc"), shell=True)
+                          os.path.join(output_path,"pism_config_default.nc"), shell=True)
+    # TODO: modify according to ensemble_params
+    subprocess.check_call("cp pism_config_override.cdl "+output_path, shell=True)
 
 if __name__ == "__main__":
     create_experiment()

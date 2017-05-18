@@ -31,7 +31,7 @@ for em_id in ensemble_members.index:
 
     ce.create_experiment(ensemble_member_name=ens_member_name,
                          ensemble_params=ens_params,
-                         copy_pism_exec=False)
+                         copy_pism_exec=True)
 
 ## Read the here written csv file somewhere else with
 ## df = pandas.read_csv(file_name,index_col=0,sep=" ")

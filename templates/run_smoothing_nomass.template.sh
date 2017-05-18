@@ -13,6 +13,8 @@ thisdir=`echo $PWD`
 outdir=$working_dir/$runname
 PISM_EXEC=$pism_exec
 
+ncgen3 pism_config_override.cdl -o pism_config_override.nc
+
 NN=2  # default number of processors
 if [ $# -gt 0 ] ; then  # if user says "exp.sh 8" then NN = 8
   NN="$1"
@@ -75,7 +77,7 @@ basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000"
 stress_opts="-stress_balance sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}}"
 
 ###### technical
-init_opts="-bootstrap -i $infile $grid"
+init_opts="-bootstrap -i $infile $grid -config pism_config_default.nc -config_override pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-ys $start_year -ye $end_year -pik -o smoothing.nc"
 
@@ -104,7 +106,7 @@ output_opts="$extra_opts $snaps_opts $ts_opts"
 stress_opts="-no_mass"
 
 ###### technical
-init_opts="-i $infile"
+init_opts="-i $infile -config pism_config_default.nc -config_override pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-ye $end_year -pik -o no_mass.nc"
 
