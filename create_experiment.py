@@ -9,9 +9,7 @@ import pism_ant_equi.pism_ant_equi as pae; reload(pae)
 
 
 def create_experiment(ensemble_member_name=ps.ensemble_name,
-                      ensemble_params={"gamma_T":1.0,"overturning_coeff":1.0,
-                                       "sia_e":2.0,"ssa_e":1.0,
-                                       "ppq":0.33,"visc":1.0,"prec":1.05},
+                      ensemble_params=ps.ensemble_params_defaults,
                       copy_pism_exec=False):
 
 
@@ -85,8 +83,9 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
     # This is an alternative way to tweak parameters.
     subprocess.check_call("ncgen3 pism_config.cdl -o "+
                           os.path.join(output_path,"pism_config_default.nc"), shell=True)
-    # TODO: modify according to ensemble_params
-    subprocess.check_call("cp pism_config_override.cdl "+output_path, shell=True)
+
+    pae.write_pism_runscript(up_settings, "pism_config_override.template.cdl", output_path,
+                             ep = ensemble_params)
 
 if __name__ == "__main__":
     create_experiment()

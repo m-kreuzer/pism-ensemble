@@ -11,6 +11,23 @@ import numpy as np
 import collections
 import user_and_platform_settings as up_settings; reload(up_settings)
 
+
+ensemble_params_defaults={"gamma_T":1.0,"overturning_coeff":1.0,
+                          "flex":5.0,"visc":1.0,
+                          "prec":0.05,"sia_e":1.0,"ssa_e":1.0,
+                          "pdd_snow":3.0,"pdd_ice":8.8,"pdd_std":5.0,
+                          "uthres":100.0,"ppq":0.25,
+                          "till_dec":3.16887646154128,"till_efo":0.02,
+                          "ecalv":1.0e17,"hcalv":50.0,                          
+                          "ttp_max":15.0,"ttp_min":5.0,
+                          "ttph_max":1000.0,"ttph_min":-1000.0}
+
+ensemble_variables = {}
+for param_name,param_default in ensemble_params_defaults.items():
+  ensemble_variables[param_name] = np.array([param_default])
+
+flex = np.array([ensemble_params_defaults['flex']])
+
 if up_settings.create_full_physics_script:
 
   ensemble_name = "pismpik_029_test"
@@ -24,20 +41,14 @@ if up_settings.create_full_physics_script:
   start_from_file = "/p/tmp/mengel/pism_out/pismpik_028_notillwat/no_mass_reduced.nc"
 
   # equi ensemble parameters
-  ssa_e = np.array([0.5,1.0])
-  sia_e = np.array([2.,5.])
+  ensemble_variables['ssa_e'] = np.array([0.5,1.0])
+  ensemble_variables['sia_e'] = np.array([2.,5.])
+
   # these two are for PICO
   # overturning_coeff in 1e6 kg-1 s-1, e6 is set in run script.
-  #overturning_coeff = np.arange(0.5,6.5+3.,3.)
-  overturning_coeff = np.arange(0.5,6.5+3.,3.)
+  ensemble_variables['overturning_coeff'] = np.arange(0.5,6.5+3.,3.)
   # gamma_T in 1.e-5  m/s, e-5 is set in run script.
-  gamma_T = np.arange(1,5+2.,2.)
-  visc = np.array([1.0])
-  ppq = np.array([0.75])
-  prec = np.array([1.02])
-  # we create PISM run scripts for all the following parameter combinations
-  #ensemble_variables = {"sia_e":sia_e,"ssa_e":ssa_e,"overturning_coeff":overturning_coeff,"gamma_T":gamma_T}
-  ensemble_variables = {"sia_e":sia_e,"ssa_e":ssa_e,"ppq":ppq,"visc":visc,"prec":prec,"overturning_coeff":overturning_coeff,"gamma_T":gamma_T}
+  ensemble_variables['gamma_T'] = np.arange(1,5+2.,2.)
 
 elif up_settings.create_paleo_script:
 
@@ -55,20 +66,16 @@ elif up_settings.create_paleo_script:
 
   # paleo ensemble paramters 
   # mantle viscosity in 1e21 Pa s, e21 is set in run script.
-  #visc = np.array([0.1,0.5,1.0])
-  visc = np.array([0.5])
-  ssa_e = np.array([0.4,0.6,0.8])
-  #ssa_e = np.array([0.6])
-  #ppq = np.array([0.25,0.5,0.75])
-  ppq = np.array([0.75])
-  #prec = np.array([1.02,1.04,1.07])
-  prec = np.array([1.02])
-  gamma_T = np.array([1.0])
-  overturning_coeff = np.array([0.8])
-  sia_e = np.array([2.])
-  # we create PISM run scripts for all the following parameter combinations
-  ensemble_variables = {"sia_e":sia_e,"ssa_e":ssa_e,"ppq":ppq,"visc":visc,"prec":prec,"overturning_coeff":overturning_coeff,"gamma_T":gamma_T}
-  #print ensemble_variables
+  #ensemble_variables['visc'] = np.array([0.1,0.5,1.0])
+  ensemble_variables['visc'] = np.array([0.5])
+  ensemble_variables['ssa_e'] = np.array([0.4,0.6,0.8])
+  ensemble_variables['sia_e'] = np.array([2.0])
+  #ensemble_variables['ppq'] = np.array([0.25,0.5,0.75])
+  ensemble_variables['ppq'] = np.array([0.75])  
+  #ensemble_variables['prec'] = np.array([1.02,1.04,1.07])
+  ensemble_variables['prec'] = np.array([1.02])
+  ensemble_variables['gamma_T'] = np.array([1.0])
+  ensemble_variables['overturning_coeff'] = np.array([0.8])
 
 else:
   print "Choose full_physics or paleo mode"

@@ -16,7 +16,7 @@ create_paleo_script = True
 ## use hashes or numbers as ensemble member identifiers
 use_numbers_as_ens_id = True
 if use_numbers_as_ens_id:
-  initial_ensemble_number = 1000
+  initial_ensemble_number = 1025
 
 
 ## find here the mapping between ensemble member ids and the varied parameters.
