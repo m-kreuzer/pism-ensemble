@@ -1,0 +1,51 @@
+netcdf pism_config_override {
+variables:
+byte pism_overrides;
+
+//beddef
+pism_overrides:bed_deformation.lithosphere_flexural_rigidity = {{ep['flex']}}e24;
+pism_overrides:bed_deformation.mantle_viscosity = {{ep['visc']}}e21;
+
+//precip
+pism_overrides:atmosphere.precip_exponential_factor_for_temperature = {{ep['prec']}};
+
+//pdd
+pism_overrides:surface.pdd.factor_snow = {{ep['pdd_snow']}}e-3;
+pism_overrides:surface.pdd.factor_ice = {{ep['pdd_ice']}}e-3;
+pism_overrides:surface.pdd.std_dev = {{ep['pdd_std']}};
+
+//sliding
+pism_overrides:basal_resistance.pseudo_plastic.u_threshold = {{ep['uthres']}};
+pism_overrides:basal_resistance.pseudo_plastic.q = {{ep['ppq']}};
+pism_overrides:hydrology.tillwat_decay_rate = {{ep['till_dec']}}e-11;
+pism_overrides:basal_yield_stress.mohr_coulomb.till_effective_fraction_overburden = {{ep['till_efo']}};
+
+//enhancement
+pism_overrides:stress_balance.sia.enhancement_factor = {{ep['sia_e']}};
+pism_overrides:stress_balance.ssa.enhancement_factor = {{ep['ssa_e']}};
+
+//calving
+pism_overrides:calving.eigen_calving.K = {{ep['ecalv']}};
+pism_overrides:calving.thickness_calving.threshold = {{ep['hcalv']}};
+
+//grounding line
+//pism_overrides:energy.basal_melt.use_grounded_cell_fraction  = "true";
+//pism_overrides:basal_yield_stress.slippery_grounding_lines = "no";
+
+//topg_to_phi
+//pism_overrides:basal_yield_stress.mohr_coulomb.topg_to_phi.enabled = "no";
+//pism_overrides:basal_yield_stress.mohr_coulomb.topg_to_phi.phi_max = {{ep['ttp_max']}};
+//pism_overrides:basal_yield_stress.mohr_coulomb.topg_to_phi.phi_min = {{ep['ttp_min']}};
+//pism_overrides:basal_yield_stress.mohr_coulomb.topg_to_phi.topg_max = {{ep['ttph_max']}};
+//pism_overrides:basal_yield_stress.mohr_coulomb.topg_to_phi.topg_min = {{ep['ttph_min']}};
+
+
+//pico ocean
+
+//phi optimization
+
+//force_to_thickness
+
+}
+
+//ncgen3 pism_config_override.cdl -o pism_config_override.nc
