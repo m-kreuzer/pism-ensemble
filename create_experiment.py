@@ -51,6 +51,9 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              code_ver = up_settings.pism_code_version,
                              input_file = ps.input_file,
                              ocean_file = ps.ocean_file,
+                             tforce_file = ps.tforce_file,
+                             pforce_file = ps.pforce_file,
+                             slforce_file = ps.slforce_file,
                              start_from_file = ps.start_from_file,
                              extra_variables = ps.extra_variables,
                              timeseries_variables = ps.timeseries_variables,
@@ -79,11 +82,10 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                                  "bin","pismr"),
                     os.path.join(output_path,"bin"))
 
-    # write a custom parameter file to output path.
-    # This is an alternative way to tweak parameters.
     subprocess.check_call("ncgen3 pism_config.cdl -o "+
                           os.path.join(output_path,"pism_config_default.nc"), shell=True)
-
+    # write a custom parameter file to output path.
+    # This is an alternative way to tweak parameters.
     pae.write_pism_runscript(up_settings, "pism_config_override.template.cdl", output_path,
                              ep = ensemble_params)
 

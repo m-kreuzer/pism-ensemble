@@ -72,8 +72,8 @@ bed_opts="-bed_def none -hydrology null"
 subgl_opts="-subgl -no_subgl_basal_melt"
 
 ###### ice physics
-basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000"
-stress_opts="-stress_balance sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}}"
+basal_opts="-yield_stress mohr_coulomb " #-topg_to_phi 5,15,-1000,1000"
+stress_opts="-stress_balance sia -sia_flow_law gpbld" # -sia_e {{ep['sia_e']}}"
 
 ###### technical
 init_opts="-bootstrap -i $infile $grid -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"

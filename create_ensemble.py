@@ -27,7 +27,10 @@ for em_id in ensemble_members.index:
 
     ens_member_name = ps.ensemble_name+"_"+em_id_num
 
-    print ens_params,ens_member_name,em_id
+    print "\n"+ens_member_name
+    for pname,pval in ens_params.items():
+      if len(dict(ps.ensemble_variables)[pname])>1:
+        print pname,pval
 
     ce.create_experiment(ensemble_member_name=ens_member_name,
                          ensemble_params=ens_params,
