@@ -53,16 +53,18 @@ grid="{{grid}}"
 
 ######## PALEO SPIN-UP ########
 infile={{start_from_file}}
+
 tforcefile=$input_data_dir/{{tforce_file}}
 pforcefile=$input_data_dir/{{pforce_file}}
 slforcefile=$input_data_dir/{{slforce_file}}
 
 ###### output settings
-length=205000
+#length=205000
+length=125000
 extratm=$((-length)):1000:0
 timestm=$((-length)):1:0
 snapstm=$((-length)):5000:0
-extra_opts="-extra_file extra -extra_times $extratm -extra_vars {{extra_variables}}" #-extra_split
+extra_opts="-extra_file extra_paleo.nc -extra_times $extratm -extra_vars {{extra_variables}}" #-extra_split
 ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
 output_opts="$extra_opts $snaps_opts $ts_opts"

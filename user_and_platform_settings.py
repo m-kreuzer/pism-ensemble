@@ -9,18 +9,20 @@ import os
 import pwd
 
 ## create run scripts if True.
-create_smoothing_script = True
+create_smoothing_script = False
 create_full_physics_script = False
 create_paleo_script = True
 
 ## use hashes or numbers as ensemble member identifiers
 use_numbers_as_ens_id = True
 if use_numbers_as_ens_id:
-  initial_ensemble_number = 1000
+  initial_ensemble_number = 1100
 
 
 ## find here the mapping between ensemble member ids and the varied parameters.
 ensemble_paramater_map = "ensemble_map.txt"
+if use_numbers_as_ens_id:
+  ensemble_paramater_map = "ensemble_map_"+str(initial_ensemble_number)+".txt"
 
 cluster_runtime = "6-23:50:00"
 number_of_cores = 32

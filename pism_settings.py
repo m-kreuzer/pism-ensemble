@@ -57,29 +57,32 @@ elif up_settings.create_paleo_script:
   #input_data_path = "/p/tmp/albrecht/pism17/pismInput"
   input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+str(resolution)+"km.nc"
   #ocean_file = input_file
-  ocean_file = "Schmidtko.jouzel07temponly_basins_resp2.nc"
+  #ocean_file = "Schmidtko.jouzel07temponly_basins_resp2.nc"
+  ocean_file = "schmidtko14_jouzel07_oceantemp_basins_response3.nc"
   # from where the paleo simulation starts.
   #start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
   start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2127_TPSO/results/result_fit_"+str(resolution)+"km_50000yrs.nc"
-  
+  start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2301_TPSO/results/snap_forcing_"+str(resolution)+"km_205000yrs.nc_-125000.000.nc"
+
   tforce_file = "timeseries_edc-wdc_temp.nc"
   pforce_file = "timeseries_edc-wdc_accum_1.05.nc"
   slforce_file = "imbrie06peltier15_sl.nc"
 
   # paleo ensemble paramters 
   # mantle viscosity in 1e21 Pa s, e21 is set in run script.
-  #ensemble_variables['visc'] = np.array([0.1,0.5,1.0])
-  ensemble_variables['visc'] = np.array([0.5])
+  ensemble_variables['visc'] = np.array([0.1,0.5,1.0])
+  #ensemble_variables['visc'] = np.array([0.5])
   ensemble_variables['ssa_e'] = np.array([0.4,0.6,0.8])
   #ensemble_variables['ssa_e'] = np.array([0.6])
   ensemble_variables['sia_e'] = np.array([2.0])
-  #ensemble_variables['ppq'] = np.array([0.25,0.5,0.75])
-  ensemble_variables['ppq'] = np.array([0.75])  
+  ensemble_variables['ppq'] = np.array([0.25,0.5,0.75])
+  #ensemble_variables['ppq'] = np.array([0.75])  
   #ensemble_variables['prec'] = np.array([1.02,1.04,1.07])
-  ensemble_variables['prec'] = np.array([1.02])
+  ensemble_variables['prec'] = np.array([0.02])
   ensemble_variables['gamma_T'] = np.array([1.0])
   ensemble_variables['overturning_coeff'] = np.array([0.8])
   ensemble_variables['till_dec'] = np.array([3.1])
+  ensemble_variables['till_efo'] = np.array([0.01,0.02,0.04])
 
 else:
   print "Choose full_physics or paleo mode"

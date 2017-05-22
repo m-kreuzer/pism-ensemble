@@ -47,6 +47,16 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              grid = grid,
                              ep = ensemble_params )
     if (up_settings.create_paleo_script):
+
+      visc = ensemble_params['visc']
+      if visc == 0.5:
+        start_from_file = ps.start_from_file
+      elif visc == 0.1:
+        start_from_file = ps.start_from_file.replace("2301","2302")
+      elif visc == 1.0:
+        start_from_file = ps.start_from_file.replace("2301","2303")
+
+
       pae.write_pism_runscript(up_settings, "run_paleo.template.sh", runscript_path,
                              code_ver = up_settings.pism_code_version,
                              input_file = ps.input_file,
@@ -54,7 +64,7 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              tforce_file = ps.tforce_file,
                              pforce_file = ps.pforce_file,
                              slforce_file = ps.slforce_file,
-                             start_from_file = ps.start_from_file,
+                             start_from_file = start_from_file,
                              extra_variables = ps.extra_variables,
                              timeseries_variables = ps.timeseries_variables,
                              grid = grid,

@@ -9,7 +9,7 @@ import subprocess
 import pism_settings as ps; reload(ps)
 import user_and_platform_settings as up_settings; reload(up_settings)
 
-ensemble_param_file = "ensemble_map.txt"
+ensemble_param_file = up_settings.ensemble_paramater_map
 f = open(ensemble_param_file, 'r')
 
 #parameter_combinations = list(itertools.product(*ps.ensemble_variables.values()))
