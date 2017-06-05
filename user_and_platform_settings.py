@@ -10,13 +10,16 @@ import pwd
 
 ## create run scripts if True.
 create_smoothing_script = False
-create_full_physics_script = False
+create_full_physics_script = True
+optimize_tillphi = True #works only with PISM code version 
+#https://github.com/talbrecht/pism_pik/tree/pik_newdev_paleo_07
+
 create_paleo_script = True
 
 ## use hashes or numbers as ensemble member identifiers
 use_numbers_as_ens_id = True
 if use_numbers_as_ens_id:
-  initial_ensemble_number = 1100
+  initial_ensemble_number = 1200
 
 
 ## find here the mapping between ensemble member ids and the varied parameters.

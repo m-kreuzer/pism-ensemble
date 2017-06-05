@@ -49,7 +49,7 @@ if up_settings.create_full_physics_script:
   # gamma_T in 1.e-5  m/s, e-5 is set in run script.
   ensemble_variables['gamma_T'] = np.arange(1,5+2.,2.)
 
-elif up_settings.create_paleo_script:
+if up_settings.create_paleo_script:
 
   ensemble_name = "pism_paleo01"
   resolution = 15 # in km
@@ -85,7 +85,7 @@ elif up_settings.create_paleo_script:
   ensemble_variables['till_efo'] = np.array([0.01,0.02,0.04])
 
 else:
-  print "Choose full_physics or paleo mode"
+  print "Choose full_physics or paleo (fit) mode"
 
 
 extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"

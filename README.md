@@ -42,4 +42,4 @@ The directory structure is currently hard-coded. Standard values are:
 `working_dir = /p/tmp/(username)/pism_out`
 
 ### Authors
-Written by Matthias Mengel, based at Potsdam Institute for Climate Impact Research.
+Written by Matthias Mengel and Torsten Albrecht, based at Potsdam Institute for Climate Impact Research.
