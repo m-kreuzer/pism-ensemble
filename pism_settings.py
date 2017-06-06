@@ -11,7 +11,6 @@ import numpy as np
 import collections
 import user_and_platform_settings as up_settings; reload(up_settings)
 
-
 ensemble_params_defaults={"gamma_T":1.0,"overturning_coeff":1.0,
                           "flex":5.0,"visc":1.0,
                           "prec":0.05,"sia_e":1.0,"ssa_e":1.0,
@@ -19,7 +18,7 @@ ensemble_params_defaults={"gamma_T":1.0,"overturning_coeff":1.0,
                           "uthres":100.0,"ppq":0.25,
                           "till_dec":3.16887646154128,"till_efo":0.02,
                           "ecalv":1.0e17,"hcalv":50.0,
-                          } 
+                          }
 
 ensemble_variables = {}
 for param_name,param_default in ensemble_params_defaults.items():
@@ -29,15 +28,14 @@ flex = np.array([ensemble_params_defaults['flex']])
 
 if up_settings.create_full_physics_script:
 
-  ensemble_name = "pismpik_029_test"
-  resolution = 15 # in km
+  ensemble_name = "pismpik_034_ens15km"
+  resolution = 50 # in km
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
-  input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_"+str(resolution)+"km.nc"
+  input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_tillphi_pism_"+str(resolution)+"km.nc"
   ocean_file = "schmidtko/schmidtko_"+str(resolution)+"km_means.nc"
   # from where the full physics simulation starts.
-  # start_from_file = "/p/tmp/mengel/pism_out/pismpik_020_equilibriumtesting_20km_03/no_mass.nc"
-  start_from_file = "/p/tmp/mengel/pism_out/pismpik_028_notillwat/no_mass_reduced.nc"
+  start_from_file = "no_mass_tillphi.nc"
 
   # equi ensemble parameters
   ensemble_variables['ssa_e'] = np.array([0.5,1.0])
@@ -49,7 +47,7 @@ if up_settings.create_full_physics_script:
   # gamma_T in 1.e-5  m/s, e-5 is set in run script.
   ensemble_variables['gamma_T'] = np.arange(1,5+2.,2.)
 
-if up_settings.create_paleo_script:
+elif up_settings.create_paleo_script:
 
   ensemble_name = "pism_paleo01"
   resolution = 15 # in km
@@ -68,7 +66,7 @@ if up_settings.create_paleo_script:
   pforce_file = "timeseries_edc-wdc_accum_1.05.nc"
   slforce_file = "imbrie06peltier15_sl.nc"
 
-  # paleo ensemble paramters 
+  # paleo ensemble paramters
   # mantle viscosity in 1e21 Pa s, e21 is set in run script.
   ensemble_variables['visc'] = np.array([0.1,0.5,1.0])
   #ensemble_variables['visc'] = np.array([0.5])
@@ -76,7 +74,7 @@ if up_settings.create_paleo_script:
   #ensemble_variables['ssa_e'] = np.array([0.6])
   ensemble_variables['sia_e'] = np.array([2.0])
   ensemble_variables['ppq'] = np.array([0.25,0.5,0.75])
-  #ensemble_variables['ppq'] = np.array([0.75])  
+  #ensemble_variables['ppq'] = np.array([0.75])
   #ensemble_variables['prec'] = np.array([1.02,1.04,1.07])
   ensemble_variables['prec'] = np.array([0.02])
   ensemble_variables['gamma_T'] = np.array([1.0])
@@ -86,7 +84,7 @@ if up_settings.create_paleo_script:
 
 else:
   print "Choose full_physics or paleo (fit) mode"
-
+  raise NotImplementedError
 
 extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"
                    "theta_ocean,shelfbmassflux,shelfbtemp,dbdt,cell_area,ice_surface_temp,climatic_mass_balance")
@@ -101,6 +99,7 @@ timeseries_variables = ("volume_glacierized_temperate,volume_glacierized_grounde
 
 # TODO: should we include skip values here?
 grids = {
+    50:"-Mx 120 -My 120 -Lz 6000 -Lbz 2000 -Mz 31 -Mbz 12",
     30:"-Mx 200 -My 200 -Lz 6000 -Lbz 2000 -Mz 41 -Mbz 16",
     20:"-Mx 300 -My 300 -Lz 6000 -Lbz 2000 -Mz 81 -Mbz 21",
     15:"-Mx 400 -My 400 -Lz 6000 -Lbz 2000 -Mz 81 -Mbz 21",

@@ -9,18 +9,16 @@ import os
 import pwd
 
 ## create run scripts if True.
-create_smoothing_script = False
+create_smoothing_script = True
 create_full_physics_script = True
-optimize_tillphi = True #works only with PISM code version 
+optimize_tillphi = False #works only with PISM code version
 #https://github.com/talbrecht/pism_pik/tree/pik_newdev_paleo_07
-
-create_paleo_script = True
+create_paleo_script = False
 
 ## use hashes or numbers as ensemble member identifiers
 use_numbers_as_ens_id = True
 if use_numbers_as_ens_id:
   initial_ensemble_number = 1200
-
 
 ## find here the mapping between ensemble member ids and the varied parameters.
 ensemble_paramater_map = "ensemble_map.txt"
@@ -35,14 +33,15 @@ username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
 
 ##########################################################################
-# matthias
-experiment_dir = os.path.join("/home/",username,"pism_experiments")
-pismcode_dir = os.path.join("/home/",username,"pism")
-pism_code_version = "pismpik"
-working_dir = os.path.join("/p/tmp/",username,"pism_out")
-input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
 
-if create_paleo_script: # torsten
+if username == "mengel": # matthias
+  experiment_dir = os.path.join("/home/",username,"pism_experiments")
+  pismcode_dir = os.path.join("/home/",username,"pism")
+  pism_code_version = "pismpik"
+  working_dir = os.path.join("/p/tmp/",username,"pism_out")
+  input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+
+elif username == "albrecht": # torsten
   experiment_dir = os.path.join("/home/",username,"pism17/pism_experiments")
   # base pism code directory
   pismcode_dir = os.path.join("/home/",username,"pism17")
@@ -52,6 +51,9 @@ if create_paleo_script: # torsten
   pism_code_version = "pism0.7_pik"
   working_dir = os.path.join("/p/tmp/",username,"pism17/pismOut/pism_paleo")
   input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
+else:
+  print "add your user-specific paths in user_and_platform_settings.py"
+  raise NotImplementedError
 ############################################################################
 
 # PIK cluster with slurm-specific compile, options for petsc
