@@ -92,12 +92,13 @@ subgl_opts="-subgl -no_subgl_basal_melt"
 
 ###### ice physics
 basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000 \
-            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden 0.02"
+            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_frac_ov']}}"
 stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} \
              -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
-init_opts="-i $infile -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
+init_opts="-i $infile"
+# -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
 run_opts="-ys 200000 -y $length -pik -o $outname -verbose 2 -options_left"
 

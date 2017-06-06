@@ -29,7 +29,7 @@ flex = np.array([ensemble_params_defaults['flex']])
 if up_settings.create_full_physics_script:
 
   ensemble_name = "pismpik_034_ens15km"
-  resolution = 50 # in km
+  resolution = 15 # in km
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
   input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_tillphi_pism_"+str(resolution)+"km.nc"
@@ -38,14 +38,15 @@ if up_settings.create_full_physics_script:
   start_from_file = "no_mass_tillphi.nc"
 
   # equi ensemble parameters
-  ensemble_variables['ssa_e'] = np.array([0.5,1.0])
-  ensemble_variables['sia_e'] = np.array([2.,5.])
-
+  ensemble_variables['ssa_e'] = np.array([0.6,1.0])
+  ensemble_variables['sia_e'] = np.array([2.])
+  ensemble_variables['ppq'] = np.array([0.25,0.75])
+  ensemble_variables['till_frac_ov'] = np.array([0.02,0.04])
   # these two are for PICO
   # overturning_coeff in 1e6 kg-1 s-1, e6 is set in run script.
-  ensemble_variables['overturning_coeff'] = np.arange(0.5,6.5+3.,3.)
+  ensemble_variables['overturning_coeff'] = np.array([0.5,6.5])
   # gamma_T in 1.e-5  m/s, e-5 is set in run script.
-  ensemble_variables['gamma_T'] = np.arange(1,5+2.,2.)
+  ensemble_variables['gamma_T'] = np.array([1,5])
 
 elif up_settings.create_paleo_script:
 
