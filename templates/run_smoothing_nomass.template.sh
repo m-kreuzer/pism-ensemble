@@ -46,6 +46,7 @@ PISM_DO="$PISM_MPIDO $NN $PISM_EXEC"
 
 infile=$input_data_dir/{{input_file}}
 atmfile=$infile
+tillphi_file=$infile
 oceanfile=$input_data_dir/{{ocean_file}}
 
 # same as in pism-ant-equi pism_settings.py

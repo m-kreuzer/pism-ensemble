@@ -28,7 +28,7 @@ flex = np.array([ensemble_params_defaults['flex']])
 
 if up_settings.create_full_physics_script:
 
-  ensemble_name = "pismpik_034_ens15km"
+  ensemble_name = "pismpik_035_ens15kmtphi"
   resolution = 15 # in km
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
@@ -41,7 +41,7 @@ if up_settings.create_full_physics_script:
   ensemble_variables['ssa_e'] = np.array([0.6,1.0])
   ensemble_variables['sia_e'] = np.array([2.])
   ensemble_variables['ppq'] = np.array([0.25,0.75])
-  ensemble_variables['till_frac_ov'] = np.array([0.02,0.04])
+  ensemble_variables['till_efo'] = np.array([0.02,0.04])
   # these two are for PICO
   # overturning_coeff in 1e6 kg-1 s-1, e6 is set in run script.
   ensemble_variables['overturning_coeff'] = np.array([0.5,6.5])

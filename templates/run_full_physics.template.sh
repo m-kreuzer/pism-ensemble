@@ -91,8 +91,8 @@ bed_opts="-bed_def none -hydrology null"
 subgl_opts="-subgl -no_subgl_basal_melt"
 
 ###### ice physics
-basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5,15,-1000,1000 \
-            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_frac_ov']}}"
+basal_opts="-yield_stress mohr_coulomb \
+            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_efo']}}"
 stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} \
              -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
 

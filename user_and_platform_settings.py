@@ -21,14 +21,14 @@ if use_numbers_as_ens_id:
   initial_ensemble_number = 1200
 
 ## find here the mapping between ensemble member ids and the varied parameters.
-ensemble_paramater_map = "ensemble_map.txt"
+ensemble_paramater_map = "ensemble_map"
 if use_numbers_as_ens_id:
-  ensemble_paramater_map = "ensemble_map_"+str(initial_ensemble_number)+".txt"
+  ensemble_paramater_map = "ensemble_map_"+str(initial_ensemble_number)
 
-cluster_runtime = "6-23:50:00"
-number_of_cores = 32
+cluster_runtime = "0-23:50:00"
+number_of_cores = 64
 account = "ice"
-submit_class = "medium"
+submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
 

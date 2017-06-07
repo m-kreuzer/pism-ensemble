@@ -9,14 +9,10 @@ import subprocess
 import pism_settings as ps; reload(ps)
 import user_and_platform_settings as up_settings; reload(up_settings)
 
-ensemble_param_file = up_settings.ensemble_paramater_map
-f = open(ensemble_param_file, 'r')
+ensemble_map_file = ps.ensemble_name+"_"+up_settings.ensemble_paramater_map+".txt"
+f = open(ensemble_map_file, 'r')
 
-#parameter_combinations = list(itertools.product(*ps.ensemble_variables.values()))
-#parameter_names = ps.ensemble_variables.keys()
-
-#for pc in parameter_combinations[0:]:
-f.readline() #skip first title line 
+f.readline() #skip first title line
 for line in f:
 
     if up_settings.use_numbers_as_ens_id:
