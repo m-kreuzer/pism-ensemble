@@ -55,10 +55,12 @@ if up_settings.create_full_physics_script:
   ensemble_variables['gamma_T'] = np.array([1,5])
 
   if username == "albrecht": # torsten
-    ensemble_name = "pismpik_03_15km_fit"
-    start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2300_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
-    input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+str(resolution)+"km.nc"
-    ocean_file = "schmidtko_"+str(resolution)+"km_means.nc"
+    ensemble_name = "pismpik_04_15km_fit"
+    #start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2300_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
+    #start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2300_TPSO/results/result_fit_"+str(resolution)+"km_50000yrs.nc"
+    #input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+str(resolution)+"km.nc"
+    #input_file = "bedmap2_albmap_racmo_hadcm3_I2S_tillphi_pism_"+str(resolution)+"km.nc"
+    #ocean_file = "schmidtko_"+str(resolution)+"km_means.nc"
 
 elif up_settings.create_paleo_script:
 
@@ -72,7 +74,7 @@ elif up_settings.create_paleo_script:
   ocean_file = "schmidtko14_jouzel07_oceantemp_basins_response3.nc"
   # from where the paleo simulation starts.
   #start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
-  start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2127_TPSO/results/result_fit_"+str(resolution)+"km_50000yrs.nc"
+  #start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2127_TPSO/results/result_fit_"+str(resolution)+"km_50000yrs.nc"
   start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2301_TPSO/results/snap_forcing_"+str(resolution)+"km_205000yrs.nc_-125000.000.nc"
 
   tforce_file = "timeseries_edc-wdc_temp.nc"

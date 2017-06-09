@@ -9,11 +9,11 @@ import os
 import pwd
 
 ## create run scripts if True.
-create_smoothing_script = False
+create_smoothing_script = True
 create_full_physics_script = True
-optimize_tillphi = True #works only with PISM code version
+optimize_tillphi = False #works only with PISM code version
 #https://github.com/talbrecht/pism_pik/tree/pik_newdev_paleo_07
-read_tillphi = False
+read_tillphi = True
 
 create_paleo_script = False
 
@@ -51,9 +51,9 @@ elif username == "albrecht": # torsten
   # create_ensemble will try to copy the pismcode_dir/pism_code_version/bin/pismr
   pism_code_version = "pism0.7_pik"
   working_dir = os.path.join("/p/tmp/",username,"pism17/pismOut/pism_paleo")
-  #input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+  input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
   #input_data_dir = "/p/projects/tumble/albrecht/pism_input/data"
-  input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
+  #input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
 
 else:
   print "add your user-specific paths in user_and_platform_settings.py"
@@ -67,3 +67,4 @@ pism_mpi_do = "srun -n"
 
 # where to look for the executable in the output directory
 pism_executable = "./bin/pismr"
+#pism_executable = "bin/pismr"

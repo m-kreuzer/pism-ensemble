@@ -10,7 +10,7 @@ import pism_ant_ensemble.pism_ant_ensemble as pae; reload(pae)
 
 def create_experiment(ensemble_member_name=ps.ensemble_name,
                       ensemble_params=ps.ensemble_params_defaults,
-                      copy_pism_exec=False):
+                      copy_pism_exec=True):
 
 
     runscript_path = os.path.join(up_settings.experiment_dir,ensemble_member_name)

@@ -47,14 +47,15 @@ PISM_DO="$PISM_MPIDO $NN $PISM_EXEC"
 origfile=$input_data_dir/{{input_file}}
 atmfile=$input_data_dir/{{input_file}}
 oceanfile=$input_data_dir/{{ocean_file}}
-fit_tillphi={{fit_phi}}
+#fit_tillphi={{fit_phi}}
+#read_tillphi={{read_phi}}
 
 ######## FULL PHYSICS EQUILIBRIUM ########
 infile={{start_from_file}}
 
 ###### output settings
 start=200000
-length=100000
+length=50000
 extratm=$((start)):50:$((start+length))
 timestm=$((start)):1:$((start+length))
 snapstm=$((start)):500:$((start+length))
@@ -86,36 +87,46 @@ outname="equi.nc"
 {%- endif %}
 
 ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{ep['gamma_T']}}e-5 \
-            -overturning_coeff {{ep['overturning_coeff']}}e6 -exclude_icerises -continental_shelf_depth -2000"
+            -overturning_coeff {{ep['overturning_coeff']}}e6 \
+            -exclude_icerises -continental_shelf_depth -2000" #new
 
 bed_opts="-bed_def none -hydrology null"
 subgl_opts="" #"-subgl -no_subgl_basal_melt"
 
 ###### ice physics
+# if [ "${read_tillphi,,}" = true ]; then
 {% if read_phi -%}
 basal_opts="-yield_stress mohr_coulomb \
-            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_efo']}}"
+            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} \
+            -pseudo_plastic_uthreshold 100.0 \
+            -till_effective_fraction_overburden {{ep['till_efo']}}"
 {% else %}
 basal_opts="-topg_to_phi 5.0,45.0,-300.0,700.0 \
-            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_efo']}}"
-            #-yield_stress mohr_coulomb
+            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} \
+            -pseudo_plastic_uthreshold 100.0 \
+            -till_effective_fraction_overburden {{ep['till_efo']}}"
+            #-yield_stress mohr_coulomb 
 {%- endif %}
 
 stress_opts="-pik -stress_balance ssa+sia -sia_e {{ep['sia_e']}} \
-             -ssa_method fd -ssa_e {{ep['ssa_e']}} " 
-             # -ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 "
+             -ssa_method fd -ssa_e {{ep['ssa_e']}} " #\
+             #-ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
 init_opts="-i $infile"
 # -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys $start -y $length -o $outname -verbose 2 -options_left -o_order zyx -o_size big -backup_interval 3.0 "
+run_opts="-ys $start -y $length -o $outname -verbose 2 -options_left " #-o_order zyx -o_size big -backup_interval 3.0 "
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
 
+diff_opts="-yield_stress mohr_coulomb -ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 \
+           -subgl -no_subgl_basal_melt"
+
+
 echo "### Full-physics options: ###"
-echo $PISM_DO $options
+echo $PISM_DO $options #$diff_opts
 
 cd $outdir
 $PISM_DO $options
