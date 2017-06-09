@@ -53,10 +53,11 @@ fit_tillphi={{fit_phi}}
 infile={{start_from_file}}
 
 ###### output settings
+start=200000
 length=100000
-extratm=0:500:1000000
-timestm=0:1:1000000
-snapstm=0:500:1000000
+extratm=$((start)):50:$((start+length))
+timestm=$((start)):1:$((start+length))
+snapstm=$((start)):500:$((start+length))
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
 ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
@@ -91,8 +92,14 @@ bed_opts="-bed_def none -hydrology null"
 subgl_opts="-subgl -no_subgl_basal_melt"
 
 ###### ice physics
+{% if read_phi -%}
 basal_opts="-yield_stress mohr_coulomb \
             -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_efo']}}"
+{% else %}
+basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5.0,45.0,-300.0,700.0 \
+            -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_efo']}}"
+{%- endif %}
+
 stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} \
              -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
 
@@ -100,7 +107,7 @@ stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} 
 init_opts="-i $infile"
 # -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys 200000 -y $length -pik -o $outname -verbose 2 -options_left"
+run_opts="-ys $start -y $length -pik -o $outname -verbose 2 -options_left"
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"

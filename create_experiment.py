@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import pism_settings as ps; reload(ps)
 import user_and_platform_settings as up_settings; reload(up_settings)
-import pism_ant_equi.pism_ant_equi as pae; reload(pae)
+import pism_ant_ensemble.pism_ant_ensemble as pae; reload(pae)
 
 
 def create_experiment(ensemble_member_name=ps.ensemble_name,
@@ -40,6 +40,7 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
       pae.write_pism_runscript(up_settings, "run_full_physics.template.sh", runscript_path,
                              code_ver = up_settings.pism_code_version,
                              fit_phi = up_settings.optimize_tillphi,
+                             read_phi = up_settings.read_tillphi,
                              input_file = ps.input_file,
                              ocean_file = ps.ocean_file,
                              start_from_file = ps.start_from_file,

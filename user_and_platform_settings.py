@@ -9,10 +9,12 @@ import os
 import pwd
 
 ## create run scripts if True.
-create_smoothing_script = True
+create_smoothing_script = False
 create_full_physics_script = True
-optimize_tillphi = False #works only with PISM code version
+optimize_tillphi = True #works only with PISM code version
 #https://github.com/talbrecht/pism_pik/tree/pik_newdev_paleo_07
+read_tillphi = False
+
 create_paleo_script = False
 
 ## use hashes or numbers as ensemble member identifiers
@@ -26,7 +28,7 @@ if use_numbers_as_ens_id:
   ensemble_paramater_map = "ensemble_map_"+str(initial_ensemble_number)
 
 cluster_runtime = "0-23:50:00"
-number_of_cores = 64
+number_of_cores = 16
 account = "ice"
 submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name
@@ -46,11 +48,13 @@ elif username == "albrecht": # torsten
   # base pism code directory
   pismcode_dir = os.path.join("/home/",username,"pism17")
   # specific version as subfolder.
-
   # create_ensemble will try to copy the pismcode_dir/pism_code_version/bin/pismr
   pism_code_version = "pism0.7_pik"
   working_dir = os.path.join("/p/tmp/",username,"pism17/pismOut/pism_paleo")
+  #input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+  #input_data_dir = "/p/projects/tumble/albrecht/pism_input/data"
   input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
+
 else:
   print "add your user-specific paths in user_and_platform_settings.py"
   raise NotImplementedError

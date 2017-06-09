@@ -6,10 +6,12 @@ the PISM run scripts should be set here.
 This should only be commited for major changes affecting all users.
 """
 
-import os
+import os, pwd
 import numpy as np
 import collections
 import user_and_platform_settings as up_settings; reload(up_settings)
+
+username = pwd.getpwuid(os.getuid()).pw_name
 
 ensemble_params_defaults={"gamma_T":1.0,"overturning_coeff":1.0,
                           "flex":5.0,"visc":1.0,
@@ -25,6 +27,7 @@ for param_name,param_default in ensemble_params_defaults.items():
   ensemble_variables[param_name] = np.array([param_default])
 
 flex = np.array([ensemble_params_defaults['flex']])
+
 
 if up_settings.create_full_physics_script:
 
@@ -48,9 +51,15 @@ if up_settings.create_full_physics_script:
   # gamma_T in 1.e-5  m/s, e-5 is set in run script.
   ensemble_variables['gamma_T'] = np.array([1,5])
 
+  if username == "albrecht": # torsten
+    ensemble_name = "pismpik_02_15km_fit"
+    start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2300_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
+    input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+str(resolution)+"km.nc"
+    ocean_file = "schmidtko_"+str(resolution)+"km_means.nc"
+
 elif up_settings.create_paleo_script:
 
-  ensemble_name = "pism_paleo01"
+  ensemble_name = "pism_paleo02"
   resolution = 15 # in km
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/tmp/albrecht/pism17/pismInput"
