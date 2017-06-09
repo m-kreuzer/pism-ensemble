@@ -69,9 +69,9 @@ output_opts="$extra_opts $snaps_opts $ts_opts"
 pscale=`echo "8.2*(1.07-1.0)" | bc -l` #motivated by 7degree temperature change over 1000m height
 phi_iter="-prescribe_gl -iterative_phi $origfile -tphi_inverse 500.0 -hphi_inverse 250.0 \
         -phimax_inverse 70.0 -phimin_inverse 2.0 -phimod_inverse 2e-3"
-atm_opts="-atmosphere pik_temp -temp_era_interim -atmosphere_pik_temp_file $infile \
-        -surface pdd,forcing,lapse_rate -temp_lapse_rate 0.0 -smb_lapse_rate 0.0 \
-        -precip_scale_factor $pscale -surface_lapse_rate_file $origfile \
+atm_opts="-atmosphere pik_temp,lapse_rate -temp_era_interim -atmosphere_pik_temp_file $infile \
+        -surface pdd,forcing -temp_lapse_rate 0.0 -smb_lapse_rate 0.0 \
+        -precip_scale_factor $pscale -atmosphere_lapse_rate_file $origfile \
          -force_to_thickness_file $origfile -force_to_thickness_alpha 2e-4 \
          $phi_iter "
 calv_opts="-calving ocean_kill -ocean_kill_file $origfile"
@@ -86,28 +86,30 @@ outname="equi.nc"
 {%- endif %}
 
 ocean_opts="-ocean cavity -ocean_cavity_file $oceanfile -gamma_T {{ep['gamma_T']}}e-5 \
-            -overturning_coeff {{ep['overturning_coeff']}}e6"
+            -overturning_coeff {{ep['overturning_coeff']}}e6 -exclude_icerises -continental_shelf_depth -2000"
 
 bed_opts="-bed_def none -hydrology null"
-subgl_opts="-subgl -no_subgl_basal_melt"
+subgl_opts="" #"-subgl -no_subgl_basal_melt"
 
 ###### ice physics
 {% if read_phi -%}
 basal_opts="-yield_stress mohr_coulomb \
             -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_efo']}}"
 {% else %}
-basal_opts="-yield_stress mohr_coulomb -topg_to_phi 5.0,45.0,-300.0,700.0 \
+basal_opts="-topg_to_phi 5.0,45.0,-300.0,700.0 \
             -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} -pseudo_plastic_uthreshold 100.0 -till_effective_fraction_overburden {{ep['till_efo']}}"
+            #-yield_stress mohr_coulomb
 {%- endif %}
 
-stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} \
-             -ssa_method fd -ssa_flow_law gpbld -ssa_e {{ep['ssa_e']}} -ssafd_ksp_rtol 1e-7 "
+stress_opts="-pik -stress_balance ssa+sia -sia_e {{ep['sia_e']}} \
+             -ssa_method fd -ssa_e {{ep['ssa_e']}} " 
+             # -ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
 init_opts="-i $infile"
 # -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys $start -y $length -pik -o $outname -verbose 2 -options_left"
+run_opts="-ys $start -y $length -o $outname -verbose 2 -options_left -o_order zyx -o_size big -backup_interval 3.0 "
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"

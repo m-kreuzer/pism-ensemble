@@ -13,12 +13,15 @@ import user_and_platform_settings as up_settings; reload(up_settings)
 
 username = pwd.getpwuid(os.getuid()).pw_name
 
-ensemble_params_defaults={"gamma_T":1.0,"overturning_coeff":1.0,
+#"overturning_coeff":1.0,"sia_e":1.0,"ssa_e":1.0,"till_efo":0.02,"ppq":0.25,
+#only via config : "pdd_snow":3.0,"pdd_ice":8.8,"pdd_std":5.0,"till_dec":3.16887646154128
+
+ensemble_params_defaults={"gamma_T":1.0,"overturning_coeff":0.8,
                           "flex":5.0,"visc":1.0,
-                          "prec":0.05,"sia_e":1.0,"ssa_e":1.0,
+                          "prec":0.05,"sia_e":2.0,"ssa_e":0.6,
                           "pdd_snow":3.0,"pdd_ice":8.8,"pdd_std":5.0,
-                          "uthres":100.0,"ppq":0.25,
-                          "till_dec":3.16887646154128,"till_efo":0.02,
+                          "uthres":100.0,"ppq":0.75,
+                          "till_dec":3.16887646154128,"till_efo":0.04,
                           "ecalv":1.0e17,"hcalv":50.0,
                           }
 
@@ -52,7 +55,7 @@ if up_settings.create_full_physics_script:
   ensemble_variables['gamma_T'] = np.array([1,5])
 
   if username == "albrecht": # torsten
-    ensemble_name = "pismpik_02_15km_fit"
+    ensemble_name = "pismpik_03_15km_fit"
     start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2300_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
     input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+str(resolution)+"km.nc"
     ocean_file = "schmidtko_"+str(resolution)+"km_means.nc"
@@ -96,8 +99,13 @@ else:
   print "Choose full_physics or paleo (fit) mode"
   raise NotImplementedError
 
-extra_variables = ("thk,topg,velbar_mag,flux_mag,mask,usurf,salinity_ocean,"
-                   "theta_ocean,shelfbmassflux,shelfbtemp,dbdt,cell_area,ice_surface_temp,climatic_mass_balance")
+extra_variables = ("surface_mass_balance_average,basal_mass_balance_average,"
+                     "diff_mask,diff_usurf,tillphi,tillwat,ocean_kill_mask,"
+                     "velbar_mag,velsurf_mag,velbar,flux_mag,"
+                     "taub_mag,taub,tauc,taud_mag,"
+                     "salinity_ocean,theta_ocean,shelfbmassflux,shelfbtemp,bmelt,"
+                     "cell_area,mask,thk,topg,dHdt,dbdt,usurf,"
+                     "ice_surface_temp,climatic_mass_balance,precipitation,air_temp") 
 timeseries_variables = ("volume_glacierized_temperate,volume_glacierized_grounded,"
                          "volume_glacierized_shelf,volume_glacierized_cold,volume_glacierized,"
                          "mass_glacierized,enthalpy_glacierized,area_glacierized_temperate_base,"
@@ -105,7 +113,9 @@ timeseries_variables = ("volume_glacierized_temperate,volume_glacierized_grounde
                          "area_glacierized,volume_rate_of_change_glacierized,"
                          "mass_rate_of_change_glacierized,"
                          "slvol,sub_shelf_ice_flux,"
-                         "discharge_flux,max_hor_vel,max_diffusivity,dt")
+                         "discharge_flux,max_hor_vel,max_diffusivity,dt,"
+                         "surface_ice_flux,grounded_basal_ice_flux,nonneg_rule_flux")
+
 
 # TODO: should we include skip values here?
 grids = {

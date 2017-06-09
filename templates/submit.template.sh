@@ -8,8 +8,6 @@
 #SBATCH --error=./log/slurm_error.err
 #SBATCH --ntasks={{number_of_cores}}
 #SBATCH --tasks-per-node=16
-#SBATCH --profile=energy
-#SBATCH --acctg-freq=energy=5
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user={{username}}@pik-potsdam.de
 

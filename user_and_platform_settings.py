@@ -28,7 +28,7 @@ if use_numbers_as_ens_id:
   ensemble_paramater_map = "ensemble_map_"+str(initial_ensemble_number)
 
 cluster_runtime = "0-23:50:00"
-number_of_cores = 16
+number_of_cores = 32
 account = "ice"
 submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name
