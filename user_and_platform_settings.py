@@ -32,7 +32,9 @@ submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name
 project_root = os.path.dirname(os.path.abspath(__file__))
 
-##########################################################################
+# PIK cluster with slurm-specific compile, options for petsc
+pism_mpi_do = "srun -n"
+submit_command = "sbatch submit.sh"
 
 if username == "mengel": # matthias
   experiment_dir = os.path.join("/home/",username,"pism_experiments")
@@ -40,7 +42,18 @@ if username == "mengel": # matthias
   pism_code_version = "pismpik"
   working_dir = os.path.join("/p/tmp/",username,"pism_out")
   input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+  submit_template = "submit.template.sh"
 
+# Matthias' Supermuc 
+elif username == "di36lav":
+  experiment_dir = os.path.join("/home/hpc/pr94ga",username,"pism_experiments")
+  pismcode_dir = os.path.join("/home/hpc/pr94ga",username,"pism")
+  pism_code_version = "pismpik"
+  working_dir = os.path.join("/gss/scratch/pr94ga/",username,"pism_out")
+  input_data_dir = "/gpfs/work/pr94ga/di36lav/pism_input_files/20170316_PismInputData"
+  submit_template = "submit_muc.template.sh"
+  pism_mpi_do = "mpiexec -n"
+  submit_command = "llsubmit submit_muc.sh"
 elif username == "albrecht": # torsten
   experiment_dir = os.path.join("/home/",username,"pism17/pism_experiments")
   # base pism code directory
@@ -51,13 +64,13 @@ elif username == "albrecht": # torsten
   pism_code_version = "pism0.7_pik"
   working_dir = os.path.join("/p/tmp/",username,"pism17/pismOut/pism_paleo")
   input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
+  submit_template = "submit.template.sh"
+
 else:
   print "add your user-specific paths in user_and_platform_settings.py"
   raise NotImplementedError
 ############################################################################
 
-# PIK cluster with slurm-specific compile, options for petsc
-pism_mpi_do = "srun -n"
 # else for PIK cluster
 # pism_mpi_do = "mpiexec.hydra -bootstrap slurm -n"
 

@@ -56,7 +56,7 @@ infile={{start_from_file}}
 length=100000
 extratm=0:500:1000000
 timestm=0:1:1000000
-snapstm=0:500:1000000
+snapstm=0:2000:1000000
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
 ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
@@ -100,7 +100,7 @@ stress_opts="-stress_balance ssa+sia -sia_flow_law gpbld -sia_e {{ep['sia_e']}} 
 init_opts="-i $infile"
 # -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys 200000 -y $length -pik -o $outname -verbose 2 -options_left"
+run_opts="-ys 200000 -y $length -pik -o $outname -verbose 2 -options_left -o_format netcdf4_parallel"
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"

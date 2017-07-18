@@ -28,8 +28,8 @@ flex = np.array([ensemble_params_defaults['flex']])
 
 if up_settings.create_full_physics_script:
 
-  ensemble_name = "pismpik_035_ens15kmtphi"
-  resolution = 15 # in km
+  ensemble_name = "pismpik_035_ens05kmtphi_ncpar"
+  resolution = 5 # in km
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
   input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_tillphi_pism_"+str(resolution)+"km.nc"
