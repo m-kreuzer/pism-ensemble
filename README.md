@@ -1,5 +1,4 @@
-## PISM-ANT-EQUI - Prepare equilibrium runs with Python
-
+## PISM-ENSEMBLE - Prepare PISM equilibrium and paleo ensemble runs with Python
 
 This code aims at easy and transparent creation of PISM run scripts.
 It is specific for the Antarctic ice sheet and should work across HPC platforms.
@@ -41,5 +40,6 @@ The directory structure is currently hard-coded. Standard values are:
 
 `working_dir = /p/tmp/(username)/pism_out`
 
-### Authors
-Written by Matthias Mengel and Torsten Albrecht, based at Potsdam Institute for Climate Impact Research.
+### License
+
+This code is licensed under GPLv3, see the LICENSE.txt. See the commit history for authors.
