@@ -59,6 +59,7 @@ length=50000
 extratm=$((start)):50:$((start+length))
 timestm=$((start)):1:$((start+length))
 snapstm=$((start)):500:$((start+length))
+
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
 ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
 snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size medium"
@@ -105,7 +106,7 @@ basal_opts="-topg_to_phi 5.0,45.0,-300.0,700.0 \
             -pseudo_plastic -pseudo_plastic_q {{ep['ppq']}} \
             -pseudo_plastic_uthreshold 100.0 \
             -till_effective_fraction_overburden {{ep['till_efo']}}"
-            #-yield_stress mohr_coulomb 
+            #-yield_stress mohr_coulomb
 {%- endif %}
 
 stress_opts="-pik -stress_balance ssa+sia -sia_e {{ep['sia_e']}} \
@@ -116,7 +117,9 @@ stress_opts="-pik -stress_balance ssa+sia -sia_e {{ep['sia_e']}} \
 init_opts="-i $infile"
 # -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys $start -y $length -o $outname -verbose 2 -options_left " #-o_order zyx -o_size big -backup_interval 3.0 "
+run_opts="-ys $start -y $length -o $outname -verbose 2 -options_left -o_format netcdf4_parallel"
+#-o_order zyx -o_size big -backup_interval 3.0 "
+
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"

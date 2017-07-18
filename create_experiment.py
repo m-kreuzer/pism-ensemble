@@ -82,7 +82,7 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
                              pism_executable=up_settings.pism_executable,
                              pism_mpi_do=up_settings.pism_mpi_do )
 
-    pae.write_pism_runscript(up_settings, "submit.template.sh", runscript_path,
+    pae.write_pism_runscript(up_settings, up_settings.submit_template, runscript_path,
                              submit_class = up_settings.submit_class,
                              account = up_settings.account,
                              cluster_runtime = up_settings.cluster_runtime,

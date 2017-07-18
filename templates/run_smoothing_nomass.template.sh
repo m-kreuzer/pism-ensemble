@@ -90,8 +90,7 @@ stress_opts="-stress_balance sia -sia_flow_law gpbld" # -sia_e {{ep['sia_e']}}"
 ###### technical
 init_opts="-bootstrap -i $infile $grid -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys $start_year -ye $end_year -pik -o smoothing.nc -options_left"
-# -o_format netcdf4_parallel
+run_opts="-ys $start_year -ye $end_year -pik -o smoothing.nc -options_left -o_format netcdf4_parallel"
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts \
          $subgl_opts $basal_opts $stress_opts $output_opts"
@@ -120,11 +119,10 @@ stress_opts="-no_mass"
 ###### technical
 init_opts="-i $infile -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ye $end_year -pik -o no_mass.nc -options_left"
-# -o_format netcdf4_parallel
+run_opts="-ye $end_year -pik -o no_mass.nc -options_left -o_format netcdf4_parallel"
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts \
-         $subgl_opts $basal_opts $stress_opts $output_opts"
+         $subgl_opts $basal_opts $stress_opts"
 
 echo "### No-mass options: ###"
 echo $PISM_DO $options

@@ -2,7 +2,7 @@
 #  DO NOT USE environment = COPY_ALL
 
 #@ job_name = smuc_$(cluster)_$(stepid)
-#@ class = micro
+#@ class = general
 #@ group = pr94ga
 #@ notify_user = mengel@pik-potsdam.de
 #@ job_type = MPICH
@@ -11,8 +11,8 @@
 #@ wall_clock_limit = 47:30:00
 #@ notification=always
 #@ network.MPI = sn_all,not_shared,us
-#@ node = 5
-#@ tasks_per_node = 28
+#@ node = 33
+#@ tasks_per_node = 16
 #@ island_count = 1
 #@ energy_policy_tag = albrecht_pism_2015
 #@ minimize_time_to_solution = yes
@@ -48,5 +48,6 @@ number_of_cores=`echo $LOADL_PROCESSOR_LIST | wc -w`
 echo $number_of_cores
 
 export PISM_ON_CLUSTER=1
-./runPism.sh $LOADL_TOTAL_TASKS > $outdir/log/pism.out
+#run_smoothing_nomass.sh $LOADL_TOTAL_TASKS > $outdir/log/pism.out
+run_full_physics.sh $LOADL_TOTAL_TASKS >> $outdir/log/pism.out
 

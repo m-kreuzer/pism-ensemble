@@ -26,7 +26,7 @@ for line in f:
     ens_member_path = os.path.join(up_settings.experiment_dir,ens_member_name)
     print ens_member_path
 
-    subprocess.check_call("cd "+ens_member_path+" && sbatch submit.sh",
+    subprocess.check_call("cd "+ens_member_path+" && "+up_settings.submit_command,
                           shell=True)
 
 
