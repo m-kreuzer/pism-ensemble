@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import pism_settings as ps; reload(ps)
 import user_and_platform_settings as up_settings; reload(up_settings)
-import pism_ant_ensemble.pism_ant_ensemble as pae; reload(pae)
+import pism_ensemble.pism_ensemble as pae; reload(pae)
 
 
 def create_experiment(ensemble_member_name=ps.ensemble_name,
@@ -15,7 +15,7 @@ def create_experiment(ensemble_member_name=ps.ensemble_name,
 
     runscript_path = os.path.join(up_settings.experiment_dir,ensemble_member_name)
     output_path = os.path.join(up_settings.working_dir,ensemble_member_name)
-    grid = ps.grids[ps.resolution]
+    grid = ps.grids[ps.grid_id]
 
     if not os.path.exists(runscript_path):
         os.makedirs(runscript_path)

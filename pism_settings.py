@@ -31,15 +31,14 @@ for param_name,param_default in ensemble_params_defaults.items():
 
 flex = np.array([ensemble_params_defaults['flex']])
 
-
 if up_settings.create_full_physics_script:
 
-  ensemble_name = "pismpik_035_ens05kmtphi_ncpar"
-  resolution = 5 # in km
+  ensemble_name = "pismpikhw_036_initmip08km"
+  grid_id = "initmip8km"
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
-  input_file = "merged/bedmap2_albmap_racmo_hadcm3_I2S_tillphi_pism_"+str(resolution)+"km.nc"
-  ocean_file = "schmidtko/schmidtko_"+str(resolution)+"km_means.nc"
+  input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_tillphi_pism_"+grid_id+"_bhflxcorr.nc"
+  ocean_file = input_file
   # from where the full physics simulation starts.
   start_from_file = "no_mass_tillphi.nc"
 
@@ -68,14 +67,14 @@ elif up_settings.create_paleo_script:
   resolution = 15 # in km
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/tmp/albrecht/pism17/pismInput"
-  input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+str(resolution)+"km.nc"
+  input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_uplift_velrignot_lgmokill_fttmask_"+grid_id+".nc"
   #ocean_file = input_file
   #ocean_file = "Schmidtko.jouzel07temponly_basins_resp2.nc"
   ocean_file = "schmidtko14_jouzel07_oceantemp_basins_response3.nc"
   # from where the paleo simulation starts.
   #start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2120_TPSO/results/result_nomass_"+str(resolution)+"km.nc"
   #start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2127_TPSO/results/result_fit_"+str(resolution)+"km_50000yrs.nc"
-  start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2301_TPSO/results/snap_forcing_"+str(resolution)+"km_205000yrs.nc_-125000.000.nc"
+  start_from_file = "/p/tmp/albrecht/pism17/pismOut/forcing/forcing2301_TPSO/results/snap_forcing_"+grid_id+"_205000yrs.nc_-125000.000.nc"
 
   tforce_file = "timeseries_edc-wdc_temp.nc"
   pforce_file = "timeseries_edc-wdc_accum_1.05.nc"
@@ -107,7 +106,7 @@ extra_variables = ("surface_mass_balance_average,basal_mass_balance_average,"
                      "taub_mag,taub,tauc,taud_mag,"
                      "salinity_ocean,theta_ocean,shelfbmassflux,shelfbtemp,bmelt,"
                      "cell_area,mask,thk,topg,dHdt,dbdt,usurf,"
-                     "ice_surface_temp,climatic_mass_balance,precipitation,air_temp") 
+                     "ice_surface_temp,climatic_mass_balance,precipitation,air_temp")
 timeseries_variables = ("volume_glacierized_temperate,volume_glacierized_grounded,"
                          "volume_glacierized_shelf,volume_glacierized_cold,volume_glacierized,"
                          "mass_glacierized,enthalpy_glacierized,area_glacierized_temperate_base,"
@@ -121,16 +120,17 @@ timeseries_variables = ("volume_glacierized_temperate,volume_glacierized_grounde
 
 # TODO: should we include skip values here?
 grids = {
-    50:"-Mx 120 -My 120 -Lz 6000 -Lbz 2000 -Mz 31 -Mbz 12",
-    30:"-Mx 200 -My 200 -Lz 6000 -Lbz 2000 -Mz 41 -Mbz 16",
-    20:"-Mx 300 -My 300 -Lz 6000 -Lbz 2000 -Mz 81 -Mbz 21",
-    15:"-Mx 400 -My 400 -Lz 6000 -Lbz 2000 -Mz 81 -Mbz 21",
-    12:"-Mx 500 -My 500 -Lz 6000 -Lbz 2000 -Mz 101 -Mbz 31",
-    10:"-Mx 600 -My 600 -Lz 6000 -Lbz 2000 -Mz 101 -Mbz 31",
-    7:"-Mx 800 -My 800 -Lz 6000 -Lbz 2000 -Mz 151 -Mbz 31",
-    5:"-Mx 1200 -My 1200 -Lz 6000 -Lbz 2000 -Mz 201 -Mbz 51",
+    "50km":"-Mx 120 -My 120 -Lz 6000 -Lbz 2000 -Mz 31 -Mbz 12",
+    "30km":"-Mx 200 -My 200 -Lz 6000 -Lbz 2000 -Mz 41 -Mbz 16",
+    "20km":"-Mx 300 -My 300 -Lz 6000 -Lbz 2000 -Mz 81 -Mbz 21",
+    "15km":"-Mx 400 -My 400 -Lz 6000 -Lbz 2000 -Mz 81 -Mbz 21",
+    "12km":"-Mx 500 -My 500 -Lz 6000 -Lbz 2000 -Mz 101 -Mbz 31",
+    "10km":"-Mx 600 -My 600 -Lz 6000 -Lbz 2000 -Mz 101 -Mbz 31",
+    "7km":"-Mx 800 -My 800 -Lz 6000 -Lbz 2000 -Mz 151 -Mbz 31",
+    "5km":"-Mx 1200 -My 1200 -Lz 6000 -Lbz 2000 -Mz 201 -Mbz 51",
     # 2km grid: vertical resolution as from spinup.sh greenland-std example
-    2:"-Mx 3000 -My 3000 -Lz 6000 -Lbz 2000 -Mz 501 -Mbz 41 -skip -skip_max 50"
+    "2km":"-Mx 3000 -My 3000 -Lz 6000 -Lbz 2000 -Mz 501 -Mbz 41 -skip -skip_max 50",
+    "initmip8km":"-Mx 761 -My 761 -Lz 6000 -Lbz 2000 -Mz 121 -Mbz 31"
 }
 
 ## no edits below

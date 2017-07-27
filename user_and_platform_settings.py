@@ -52,7 +52,7 @@ elif username == "di36lav":
   pismcode_dir = os.path.join("/home/hpc/pr94ga",username,"pism")
   pism_code_version = "pismpik"
   working_dir = os.path.join("/gss/scratch/pr94ga/",username,"pism_out")
-  input_data_dir = "/gpfs/work/pr94ga/di36lav/pism_input_files/20170316_PismInputData"
+  input_data_dir = "/gpfs/work/pr94ga/di36lav/pism_input_files/20170718_initMIP_Input"
   submit_template = "submit_muc.template.sh"
   pism_mpi_do = "mpiexec -n"
   submit_command = "llsubmit submit_muc.sh"

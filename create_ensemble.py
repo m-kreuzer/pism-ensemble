@@ -6,7 +6,7 @@ create_experiments.py.
 
 import pism_settings as ps; reload(ps)
 import user_and_platform_settings as up_settings; reload(up_settings)
-import pism_ant_equi.pism_ant_equi as pae; reload(pae)
+import pism_ensemble.pism_ensemble as pae; reload(pae)
 import create_experiment as ce; reload(ce)
 
 ensemble_members = pae.span_ensemble(ps.ensemble_variables,
