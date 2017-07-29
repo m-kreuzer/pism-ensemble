@@ -8,9 +8,11 @@ This should only be commited for major changes affecting all users.
 import os
 import pwd
 
-## create run scripts if True.
+## create these scripts if True.
 create_smoothing_script = True
 create_full_physics_script = True
+create_restart_prepare_script = True
+
 optimize_tillphi = False #works only with PISM code version
 #https://github.com/talbrecht/pism_pik/tree/pik_newdev_paleo_07
 read_tillphi = True
@@ -28,7 +30,7 @@ if use_numbers_as_ens_id:
   ensemble_paramater_map = "ensemble_map_"+str(initial_ensemble_number)
 
 cluster_runtime = "0-23:50:00"
-number_of_cores = 32
+number_of_cores = 128
 account = "ice"
 submit_class = "short"
 username = pwd.getpwuid(os.getuid()).pw_name

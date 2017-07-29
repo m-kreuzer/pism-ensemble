@@ -33,7 +33,7 @@ flex = np.array([ensemble_params_defaults['flex']])
 
 if up_settings.create_full_physics_script:
 
-  ensemble_name = "pismpikhw_036_initmip08km"
+  ensemble_name = "pismpik_036_initmip08km"
   grid_id = "initmip8km"
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"

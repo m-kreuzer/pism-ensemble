@@ -52,6 +52,9 @@ oceanfile=$input_data_dir/{{ocean_file}}
 
 ######## FULL PHYSICS EQUILIBRIUM ########
 infile={{start_from_file}}
+# if restart is set to true below, start from the following file
+# (will be updated through the prepare_restart script)
+restart_file=snapshots_restart_202000.000.nc
 
 ###### output settings
 start=200000
@@ -114,19 +117,23 @@ stress_opts="-pik -stress_balance ssa+sia -sia_e {{ep['sia_e']}} \
              #-ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 "
 
 ###### technical
-init_opts="-i $infile"
 # -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
-run_opts="-ys $start -y $length -o $outname -verbose 2 -options_left -o_format netcdf4_parallel"
+run_opts="-o $outname -verbose 2 -options_left -o_format netcdf4_parallel"
 #-o_order zyx -o_size big -backup_interval 3.0 "
 
+restart=false
+if $restart ; then
+  init_opts="-i $restart_file -ye $((start+length))"
+else
+  init_opts="-i $infile -ys $start -y $length"
+fi
 
 options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
          $basal_opts $stress_opts $output_opts"
 
 diff_opts="-yield_stress mohr_coulomb -ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 \
            -subgl -no_subgl_basal_melt"
-
 
 echo "### Full-physics options: ###"
 echo $PISM_DO $options #$diff_opts

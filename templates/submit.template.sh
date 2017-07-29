@@ -25,12 +25,16 @@ module load pism/stable08_srunpetsc
 export I_MPI_PMI_LIBRARY=/p/system/slurm/lib/libpmi.so
 export OMP_NUM_THREADS=1
 
+# for parallel netcdf writings
+export I_MPI_EXTRA_FILESYSTEM=on
+export I_MPI_EXTRA_FILESYSTEM_LIST=gpfs
+
 export PISM_ON_CLUSTER=1
 
 if [ -f "./run_smoothing_nomass.sh" ]
 then
 ./run_smoothing_nomass.sh $SLURM_NTASKS > $outdir/log/pism.out
-fi 
+fi
 
 if [ -f "./run_full_physics.sh" ]
 then

@@ -13,8 +13,9 @@ ensemble_map_file = ps.ensemble_name+"_"+up_settings.ensemble_paramater_map+".tx
 f = open(ensemble_map_file, 'r')
 
 f.readline() #skip first title line
-for line in f:
-
+for i,line in enumerate(f):
+    # if i > 20:
+        # print line
     if up_settings.use_numbers_as_ens_id:
       ens_member_id = line.split(" ")[1].rstrip('"') #use numbers
     else:
