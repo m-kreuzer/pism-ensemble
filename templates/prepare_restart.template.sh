@@ -20,6 +20,9 @@ rsync -aCv --update $outdir/snapshots_$year $outdir/snapshots_restart_$year
 # set restart flag to true
 sed -i 's/restart=false.*/restart=true/g' run_full_physics.sh
 
+# do not run smoothing and nomass again
+sed -i 's/run_smoothing_nomass=true.*/run_smoothing_nomass=false/g' submit.sh
+
 # write newest restart to run file
 sed -i 's/.*snapshots_restart.*/'restart_file=snapshots_restart_$year/g run_full_physics.sh
 

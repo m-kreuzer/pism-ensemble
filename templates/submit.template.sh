@@ -29,22 +29,26 @@ export OMP_NUM_THREADS=1
 export I_MPI_EXTRA_FILESYSTEM=on
 export I_MPI_EXTRA_FILESYSTEM_LIST=gpfs
 
+# make the PISM execution script aware that it is on compute nodes.
 export PISM_ON_CLUSTER=1
 
-if [ -f "./run_smoothing_nomass.sh" ]
-then
-./run_smoothing_nomass.sh $SLURM_NTASKS > $outdir/log/pism.out
+{% if create_smoothing_script -%}
+# restarted runs would not need to have smoothing and nomass again
+# -> run_smoothing_nomass=false
+run_smoothing_nomass=true
+if $run_smoothing_nomass ; then
+    ./run_smoothing_nomass.sh $SLURM_NTASKS > $outdir/log/pism.out
 fi
+{%- endif %}
 
-if [ -f "./run_full_physics.sh" ]
-then
+{% if create_full_physics_script -%}
 ./run_full_physics.sh $SLURM_NTASKS >> $outdir/log/pism.out
-fi
+{%- endif %}
 
-if [ -f "./run_paleo.sh" ]
-then
-  ./run_paleo.sh $SLURM_NTASKS >> $outdir/log/pism.out
-fi
+{% if create_paleo_script -%}
+./run_paleo.sh $SLURM_NTASKS >> $outdir/log/pism.out
+{%- endif %}
+
 echo run finished at `date`                     >> ./log/srunInfo
 
 
