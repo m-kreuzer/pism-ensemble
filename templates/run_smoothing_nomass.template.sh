@@ -77,7 +77,7 @@ snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size med
 output_opts="$extra_opts $snaps_opts $ts_opts"
 
 ###### boundary conditions
-atm_opts="-surface simple -atmosphere given -atmosphere_given_file $infile"
+atm_opts="-surface given -surface_given_file $infile"
 ocean_opts="-ocean pik -meltfactor_pik 5e-3"
 calv_opts="-calving ocean_kill -ocean_kill_file $infile"
 bed_opts="-bed_def none -hydrology null"

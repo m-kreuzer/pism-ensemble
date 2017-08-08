@@ -69,7 +69,7 @@ snaps_opts="-save_file snapshots -save_times $snapstm -save_split -save_size med
 output_opts="$extra_opts $snaps_opts $ts_opts"
 
 ###### boundary conditions
-# if [ "${fit_tillphi,,}" = true ]; then
+
 {% if fit_phi -%}
 pscale=`echo "8.2*(1.07-1.0)" | bc -l` #motivated by 7degree temperature change over 1000m height
 phi_iter="-prescribe_gl -iterative_phi $origfile -tphi_inverse 500.0 -hphi_inverse 250.0 \
@@ -83,7 +83,7 @@ calv_opts="-calving ocean_kill -ocean_kill_file $origfile"
 outname="equi-fit.nc"
 {% else %}
 # else
-atm_opts="-surface simple -atmosphere given -atmosphere_given_file $atmfile"
+atm_opts="-surface given -surface_given_file $atmfile"
 calv_opts="-calving eigen_calving,thickness_calving -eigen_calving_K 1e17  \
          -thickness_calving_threshold 200"
 outname="equi.nc"
