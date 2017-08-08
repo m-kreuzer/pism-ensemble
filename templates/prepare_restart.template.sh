@@ -7,7 +7,7 @@ runname=`echo $PWD | awk -F/ '{print $NF}'`
 outdir=$working_dir/$runname
 
 # find the latest snapshot from list of files
-latest_snap=`ls $outdir/snapshots_* | tail -1 | awk -F/ '{print $NF}'`
+latest_snap=`ls $outdir/snapshots_[0-9]* | tail -1 | awk -F/ '{print $NF}'`
 echo latest snapshot is $latest_snap
 
 # get the year from snapshot name

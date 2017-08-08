@@ -9,9 +9,25 @@ This should only be commited for major changes affecting all users.
 import os, pwd
 import numpy as np
 import collections
-import user_and_platform_settings as up_settings; reload(up_settings)
 
 username = pwd.getpwuid(os.getuid()).pw_name
+
+## create these scripts if True.
+create_smoothing_script = True
+create_full_physics_script = True
+create_restart_prepare_script = True
+
+optimize_tillphi = False #works only with PISM code version
+#https://github.com/talbrecht/pism_pik/tree/pik_newdev_paleo_07
+read_tillphi = True
+
+create_paleo_script = False
+
+## use hashes or numbers as ensemble member identifiers
+use_numbers_as_ens_id = True
+if use_numbers_as_ens_id:
+  initial_ensemble_number = 1232
+
 
 #"overturning_coeff":1.0,"sia_e":1.0,"ssa_e":1.0,"till_efo":0.02,"ppq":0.25,
 #only via config : "pdd_snow":3.0,"pdd_ice":8.8,"pdd_std":5.0,"till_dec":3.16887646154128
@@ -31,13 +47,13 @@ for param_name,param_default in ensemble_params_defaults.items():
 
 flex = np.array([ensemble_params_defaults['flex']])
 
-if up_settings.create_full_physics_script:
+if create_full_physics_script:
 
-  ensemble_name = "pismpik_036_initmip08km"
-  grid_id = "initmip8km"
+  ensemble_name = "pismpik_037_initmip16km"
+  grid_id = "initmip16km"
   ## for creation of input data, see icesheets/pism_input project.
   #input_data_path = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
-  input_file = "bedmap2_albmap_racmo_hadcm3_I2S_schmidtko_tillphi_pism_"+grid_id+"_bhflxcorr.nc"
+  input_file = "bedmap2_albmap_racmo_wessem_tillphi_pism_"+grid_id+".nc"
   ocean_file = input_file
   # from where the full physics simulation starts.
   start_from_file = "no_mass_tillphi.nc"
@@ -61,7 +77,7 @@ if up_settings.create_full_physics_script:
     #input_file = "bedmap2_albmap_racmo_hadcm3_I2S_tillphi_pism_"+str(resolution)+"km.nc"
     #ocean_file = "schmidtko_"+str(resolution)+"km_means.nc"
 
-elif up_settings.create_paleo_script:
+elif create_paleo_script:
 
   ensemble_name = "pism_paleo02"
   resolution = 15 # in km
@@ -130,8 +146,75 @@ grids = {
     "5km":"-Mx 1200 -My 1200 -Lz 6000 -Lbz 2000 -Mz 201 -Mbz 51",
     # 2km grid: vertical resolution as from spinup.sh greenland-std example
     "2km":"-Mx 3000 -My 3000 -Lz 6000 -Lbz 2000 -Mz 501 -Mbz 41 -skip -skip_max 50",
-    "initmip8km":"-Mx 761 -My 761 -Lz 6000 -Lbz 2000 -Mz 121 -Mbz 31"
+    "initmip8km":"-Mx 761 -My 761 -Lz 6000 -Lbz 2000 -Mz 121 -Mbz 31",
+    "initmip16km":"-Mx 381 -My 381 -Lz 6000 -Lbz 2000 -Mz 81 -Mbz 21"
 }
+
+"""
+Platform and user specific settings
+These mostly go to the set_environment.sh that is sourced from
+the PISM run script.
+This should only be commited for major changes affecting all users.
+"""
+
+
+## find here the mapping between ensemble member ids and the varied parameters.
+ensemble_paramater_map = "ensemble_map"
+if use_numbers_as_ens_id:
+  ensemble_paramater_map = "ensemble_map_"+str(initial_ensemble_number)
+
+cluster_runtime = "0-23:50:00"
+number_of_cores = 32
+account = "tumble"
+submit_class = "short"
+username = pwd.getpwuid(os.getuid()).pw_name
+project_root = os.path.dirname(os.path.abspath(__file__))
+
+# PIK cluster with slurm-specific compile, options for petsc
+pism_mpi_do = "srun -n"
+submit_command = "sbatch submit.sh"
+
+if username == "mengel": # matthias
+  experiment_dir = os.path.join("/home/",username,"pism_experiments")
+  pismcode_dir = os.path.join("/home/",username,"pism")
+  pism_code_version = "pismpik"
+  working_dir = os.path.join("/p/tmp/",username,"pism_out")
+  input_data_dir = "/p/projects/pism/mengel/pism_input/merged"
+  submit_template = "submit.template.sh"
+
+# Matthias' Supermuc
+elif username == "di36lav":
+  experiment_dir = os.path.join("/home/hpc/pr94ga",username,"pism_experiments")
+  pismcode_dir = os.path.join("/home/hpc/pr94ga",username,"pism")
+  pism_code_version = "pismpik"
+  working_dir = os.path.join("/gss/scratch/pr94ga/",username,"pism_out")
+  input_data_dir = "/gpfs/work/pr94ga/di36lav/pism_input_files/20170718_initMIP_Input"
+  submit_template = "submit_muc.template.sh"
+  pism_mpi_do = "mpiexec -n"
+  submit_command = "llsubmit submit_muc.sh"
+elif username == "albrecht": # torsten
+  experiment_dir = os.path.join("/home/",username,"pism17/pism_experiments")
+  # base pism code directory
+  pismcode_dir = os.path.join("/home/",username,"pism17")
+  # specific version as subfolder.
+  # create_ensemble will try to copy the pismcode_dir/pism_code_version/bin/pismr
+  pism_code_version = "pism0.7_pik"
+  working_dir = os.path.join("/p/tmp/",username,"pism17/pismOut/pism_paleo")
+#  input_data_dir = "/p/projects/tumble/mengel/pismInputData/20170316_PismInputData"
+  input_data_dir = "/p/tmp/albrecht/pism17/pismInput"
+  submit_template = "submit.template.sh"
+
+else:
+  print "add your user-specific paths in user_and_platform_settings.py"
+  raise NotImplementedError
+
+# else for PIK cluster
+# pism_mpi_do = "mpiexec.hydra -bootstrap slurm -n"
+
+# where to look for the executable in the output directory
+pism_executable = "./bin/pismr"
+#pism_executable = "bin/pismr"
+
 
 ## no edits below
 # sort by name and keep this sorting
