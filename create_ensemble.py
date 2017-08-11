@@ -36,6 +36,5 @@ for em_id in ensemble_members.index:
 
 ## Read the here written csv file somewhere else with
 ## df = pandas.read_csv(file_name,index_col=0,sep=" ")
-ensemble_map_file = settings.ensemble_name+"_"+settings.ensemble_paramater_map+".txt"
-ensemble_members.to_csv(ensemble_map_file,sep=" ", index_label="ens_member")
+ensemble_members.to_csv(settings.ensemble_map_file,sep=" ", index_label="ens_member")
 print "Wrote ensemble map file to", ensemble_map_file
