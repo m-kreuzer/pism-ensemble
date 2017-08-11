@@ -6,10 +6,12 @@ create_ensemble.py, to the batch system of cluster PIK or SUPERMUC.
 import os
 import itertools
 import subprocess
-import settings; reload(settings)
+import pism_ensemble.pism_ensemble as pae; reload(pae)
 
-ensemble_map_file = settings.ensemble_name+"_"+settings.ensemble_paramater_map+".txt"
-f = open(ensemble_map_file, 'r')
+project_root = os.path.dirname(os.path.realpath(__file__))
+settings = pae.settings_handler(project_root)
+
+f = open(settings.ensemble_map_file, 'r')
 
 f.readline() #skip first title line
 for i,line in enumerate(f):

@@ -14,7 +14,6 @@ ensemble_members = pae.span_ensemble(settings.ensemble_variables,
                                      start_number=settings.initial_ensemble_number)
 
 print ensemble_members
-#ens_mem_num={}
 
 for em_id in ensemble_members.index:
 

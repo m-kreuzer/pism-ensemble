@@ -64,6 +64,7 @@ def create_experiment(settings, ensemble_member_name,
                              start_from_file = settings.start_from_file,
                              extra_variables = settings.extra_variables,
                              timeseries_variables = settings.timeseries_variables,
+                             regrid_from_inputfile = settings.regrid_from_inputfile,
                              grid = grid,
                              ep = ensemble_params )
 

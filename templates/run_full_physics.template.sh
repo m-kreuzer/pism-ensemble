@@ -57,11 +57,13 @@ infile={{start_from_file}}
 restart_file=snapshots_restart_202000.000.nc
 
 ###### output settings
-start=200000
+start=300000
 length=50000
-extratm=$((start)):50:$((start+length))
-timestm=$((start)):1:$((start+length))
-snapstm=$((start)):500:$((start+length))
+# such general definition helps to avoid errors when start is determined
+# from the input file.
+extratm=0:50:1000000
+timestm=0:1:1000000
+snapstm=0:500:1000000
 
 extra_opts="-extra_file extra -extra_split -extra_times $extratm -extra_vars {{extra_variables}}"
 ts_opts="-ts_times $timestm -ts_vars {{timeseries_variables}} -ts_file timeseries.nc"
@@ -116,6 +118,7 @@ stress_opts="-pik -stress_balance ssa+sia -sia_e {{ep['sia_e']}} \
              -ssa_method fd -ssa_e {{ep['ssa_e']}} " #\
              #-ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 "
 
+
 ###### technical
 # -config $outdir/pism_config_default.nc -config_override $outdir/pism_config_override.nc"
 ## netcdf4_parallel needs compilation with -DPism_USE_PARALLEL_NETCDF4=YES
@@ -129,8 +132,16 @@ else
   init_opts="-i $infile -ys $start -y $length"
 fi
 
-options="$init_opts $run_opts $atm_opts $ocean_opts $calv_opts $bed_opts $subgl_opts \
-         $basal_opts $stress_opts $output_opts"
+{% if regrid_from_inputfile -%}
+grid="{{grid}}"
+regrid_opts="-i $origfile -bootstrap $grid -regrid_file $infile -regrid_vars thk,usurf,Href,tillwat,bmelt,enthalpy,litho_temp,temp"
+init_opts="-ys $start -y $length"
+{%- endif %}
+
+
+
+options="$init_opts $run_opts $regrid_opts $atm_opts $ocean_opts $calv_opts \
+         $bed_opts $subgl_opts $basal_opts $stress_opts $output_opts"
 
 diff_opts="-yield_stress mohr_coulomb -ssa_flow_law gpbld -sia_flow_law gpbld -ssafd_ksp_rtol 1e-7 \
            -subgl -no_subgl_basal_melt"
