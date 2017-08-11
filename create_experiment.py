@@ -5,8 +5,8 @@ import shutil
 import subprocess
 import pism_ensemble.pism_ensemble as pae; reload(pae)
 
-def create_experiment(ensemble_member_name, ensemble_params,
-                      copy_pism_exec=True):
+def create_experiment(settings, ensemble_member_name,
+                      ensemble_params, copy_pism_exec=True):
 
 
     runscript_path = os.path.join(settings.experiment_dir,ensemble_member_name)
@@ -110,7 +110,8 @@ def create_experiment(ensemble_member_name, ensemble_params,
 
 if __name__ == "__main__":
 
-    current_directory = os.path.dirname(os.path.realpath(__file__))
-    settings = pae.settings_handler(current_directory)
+    project_root = os.path.dirname(os.path.realpath(__file__))
+    settings = pae.settings_handler(project_root)
 
-    create_experiment(settings.ensemble_name, settings.ensemble_params_defaults)
+    create_experiment(settings, settings.ensemble_name,
+        settings.ensemble_params_defaults)
