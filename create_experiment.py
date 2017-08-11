@@ -3,12 +3,9 @@
 import os
 import shutil
 import subprocess
-import settings; reload(settings)
 import pism_ensemble.pism_ensemble as pae; reload(pae)
 
-
-def create_experiment(ensemble_member_name=settings.ensemble_name,
-                      ensemble_params=settings.ensemble_params_defaults,
+def create_experiment(ensemble_member_name, ensemble_params,
                       copy_pism_exec=True):
 
 
@@ -112,4 +109,8 @@ def create_experiment(ensemble_member_name=settings.ensemble_name,
                              ep = ensemble_params)
 
 if __name__ == "__main__":
-    create_experiment()
+
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    settings = pae.settings_handler(current_directory)
+
+    create_experiment(settings.ensemble_name, settings.ensemble_params_defaults)

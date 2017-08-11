@@ -1,5 +1,7 @@
 
 import os
+import sys
+import pwd
 import jinja2
 import subprocess
 import itertools
@@ -49,3 +51,25 @@ def span_ensemble(ensemble_variables,start_number=0):
     ensemble_members = ensemble_members.transpose()
 
     return ensemble_members
+
+
+def settings_handler(setting_directory):
+
+    username = pwd.getpwuid(os.getuid()).pw_name
+
+    if setting_directory not in sys.path:
+        sys.path.append(settings_directory)
+
+    if "albr" in username:
+        import settings_torsten as settings
+
+    elif "meng" in username:
+        import settings_matthias as settings
+
+    else:
+        print "Create your settings file first."
+        print "copy the example settings.py to settings_yourname.py"
+        print "and edit the import_settings() function."
+        raise NotImplementedError
+
+    return settings

@@ -1,9 +1,10 @@
 
 """
---- THIS IS A TEMPLATE ---
-This settings file is here for reference. It does not need to be up to date.
-Have a look into the personal settings_*py settings file and pick the one that was
-updated latest. a git log settings_somename.py may help you.
+--- THIS IS A PERSONAL SETTNGS FILE ---
+If you are not the author, you should not edit, but rather copy it to a new
+file, for example settings_yourname.py.
+Then add 2 lines to the pism_ensemble.settings_handler function. And
+use settings_yourname.py freely.
 """
 
 import os, pwd
